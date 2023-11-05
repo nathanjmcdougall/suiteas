@@ -1,0 +1,1 @@
+`pre-commit` has been configured for this project with basic hooks.

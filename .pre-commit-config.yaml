@@ -1,0 +1,41 @@
+default_stages:
+  [
+    commit,
+    merge-commit,
+    push,
+    prepare-commit-msg,
+    commit-msg,
+    post-checkout,
+    post-commit,
+    post-merge,
+    post-rewrite,
+    manual,
+  ]
+ci:
+  autofix_prs: false
+repos:
+  - repo: local
+    hooks:
+      - id: forbidden-files
+        name: forbidden files
+        entry: found Copier update rejection files; review them and remove them
+        language: fail
+        files: "\\.rej$"
+      - id: setuptools_scm
+        name: setuptools_scm
+        entry: python -m setuptools_scm -c
+        additional_dependencies: [setuptools_scm]
+        language: python
+        files: ^pyproject.toml$
+
+  - repo: https://github.com/lk16/detect-missing-init
+    rev: v0.1.6
+    hooks:
+      - id: detect-missing-init
+        args: ["--create", "--python-folders", "src/suiteas,tests"]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-merge-conflict
+        args: [--assume-in-merge]
