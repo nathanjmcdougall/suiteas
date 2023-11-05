@@ -1,0 +1,1 @@
+`ruff` has been configured for the project via `pre-commit`.
