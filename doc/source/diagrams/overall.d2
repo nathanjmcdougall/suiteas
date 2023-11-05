@@ -1,0 +1,30 @@
+...@config
+
+Python Code: {class: codebase}
+Unit Test Suite: {class: codebase}
+
+Developer: {class: person}
+SuiteAs: {class: package}
+
+Write New Python Code: {class: process}
+Update Python Code: {class: process}
+Update Unit Test Suite: {class: process}
+Organize Test Suite: {class: process}
+
+Python Code -> Organize Test Suite
+Python Code -> Update Python Code
+Unit Test Suite -> Organize Test Suite
+Unit Test Suite -> Update Unit Test Suite
+
+Developer -> Write New Python Code
+Developer -> Update Python Code
+Developer -> Update Unit Test Suite
+SuiteAs -> Organize Test Suite
+
+Write New Python Code -> Python Code
+Write New Python Code -> Organize Test Suite: {class: triggers}
+Update Python Code -> Python Code
+Update Python Code -> Organize Test Suite: {class: triggers}
+Update Unit Test Suite -> Unit Test Suite
+Update Unit Test Suite -> Organize Test Suite: {class: triggers}
+Organize Test Suite -> Unit Test Suite
