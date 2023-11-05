@@ -1,0 +1,80 @@
+[project]
+name = "suiteas"
+dynamic = ["version"]
+description = "An opinionated testing suite organizer for pytest"
+authors = [
+    { name = "Nathan McDougall", email = "nathan.j.mcdougall@gmail.com" },
+]
+dependencies = []
+readme = "README.md"
+requires-python = ">= 3.11"
+license = { text = "MIT" }
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development :: Testing",
+    "Typing :: Typed",
+]
+keywords = [
+    "pytest",
+    "test",
+    "testing",
+    "test suite",
+    "suite",
+    "sync",
+    "synchronize",
+    "pre-commit",
+    "boilerplate",
+    "skeleton",
+]
+
+[project.urls]
+"Source Code" = "https://github.com/nathanjmcdougall/suiteas"
+"Bug Tracker" = "https://github.com/nathanjmcdougall/suiteas/issues"
+
+[build-system]
+requires = ["setuptools", "setuptools_scm[toml]"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+write_to = "src/suiteas/_version.py"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["suiteas"]
+license-files = ["LICENSE"]
+
+[tool.distutils.bdist_wheel]
+universal = true
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "towncrier>=23.10.0",
+    "build>=1.0.3",
+    "twine>=4.0.2",
+    "pre-commit>=3.5.0",
+    "setuptools>=68.2.2",
+    "setuptools_scm[toml]>=8.0.4",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.towncrier]
+directory = "doc/changelog_entries"
+package = "suiteas"
+package_dir = "src"
+title_format = "{version} ({project_date})"
+filename = "doc/source/release/changelog/changelog.rst"
+issue_format = "https://github.com/nathanjmcdougall/suiteas/issues/{issue}"
+[[tool.towncrier.type]]
+directory = "feature"
+name = "Features"
+showcontent = true
