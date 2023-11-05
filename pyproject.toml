@@ -5,7 +5,7 @@ description = "An opinionated testing suite organizer for pytest"
 authors = [
     { name = "Nathan McDougall", email = "nathan.j.mcdougall@gmail.com" },
 ]
-dependencies = []
+dependencies = ["pydantic>=2.4.2"]
 readme = "README.md"
 requires-python = ">= 3.11" # Sync with ruff target-version
 license = { text = "MIT" }
@@ -62,6 +62,9 @@ dev-dependencies = [
     "pre-commit>=3.5.0",
     "setuptools>=68.2.2",
     "setuptools_scm[toml]>=8.0.4",
+    "pytest>=7.4.3",
+    "typing-extensions>=4.8.0",
+    "ruff>=0.1.4",
 ]
 
 [tool.hatch.metadata]
@@ -94,6 +97,14 @@ ignore = [
 ]
 line-length = 88
 target-version = "py311"
+
+[tool.ruff.extend-per-file-ignores]
+"src/suiteas/**/__init__.py" = [
+    "D104", # __init__.py files do not need a docstring necessarily.
+]
+"tests/**/__init__.py" = [
+    "D104", # __init__.py files do not need a docstring necessarily.
+]
 
 [tool.ruff.pydocstyle]
 convention = "google"
