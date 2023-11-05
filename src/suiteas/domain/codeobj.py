@@ -1,16 +1,18 @@
 """Value objects for code objects."""
 
+from pathlib import Path
+
 from pydantic import BaseModel
 
 
-class Function(BaseModel):
+class Func(BaseModel):
     """A Python function."""
     name: str
 
 class File(BaseModel):
     """A Python file."""
-    name: str
-    functions: list[Function]
+    path: Path
+    funcs: list[Func]
 
 class Codebase(BaseModel):
     """A codebase."""
@@ -22,9 +24,9 @@ class TestClass(BaseModel):
 
 class TestFile(BaseModel):
     """A pytest test file."""
-    name: str
+    path: Path
     test_classes: list[TestClass]
 
 class TestSuite(BaseModel):
     """A pytest unit test suite."""
-    files: list[TestFile]
+    test_files: list[TestFile]
