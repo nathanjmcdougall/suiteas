@@ -6,7 +6,6 @@ from pydantic.alias_generators import to_pascal
 from suiteas.core.config import PkgConfig
 from suiteas.domain.codeobj import Codebase, Func, TestClass, TestFile, TestSuite
 
-UNITTEST_DIR_NAME = "unit"
 TEST_FUNC_PREFIX = "test_"
 TEST_CLASS_PREFIX = "Test"
 
@@ -14,7 +13,9 @@ TEST_CLASS_PREFIX = "Test"
 def _path_to_test_path(path: Path, pkg_config: PkgConfig) -> Path:
     """Convert a path to a test path."""
     rel_path = path.relative_to(pkg_config.src_rel_path)
-    test_parent_path = pkg_config.tests_rel_path / UNITTEST_DIR_NAME / rel_path.parent
+    test_parent_path = (
+        pkg_config.tests_rel_path / pkg_config.unittest_dir_name / rel_path.parent
+    )
     test_path = test_parent_path / f"{TEST_FUNC_PREFIX}{path.stem}.py"
     return test_path
 

@@ -103,6 +103,9 @@ target-version = "py311"
 "src/suiteas/**/__init__.py" = [
     "D104", # __init__.py files do not need a docstring necessarily.
 ]
+"src/suiteas_test/**/__init__.py" = [
+    "D104", # __init__.py files do not need a docstring necessarily.
+]
 "tests/**/__init__.py" = [
     "D104", # __init__.py files do not need a docstring necessarily.
 ]
