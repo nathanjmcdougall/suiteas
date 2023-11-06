@@ -1,7 +1,16 @@
 """Configuration for the package to be analyzed."""
 
-BASE_DIR = "base"
-UNITTESTS_FOLDER = "tests/unit"
-SRC_FOLDER = "src"
-PKG_NAME = "example"
+from pathlib import Path
+
+from pydantic import BaseModel
+
+
+class PkgConfig(BaseModel):
+    """Configuration for the package to be analyzed."""
+
+    tests_rel_path: Path
+    src_rel_path: Path
+    pkg_names: list[str]
+
+
 

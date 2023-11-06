@@ -86,14 +86,15 @@ showcontent = true
 src = ["src"]
 select = ["ALL"]
 ignore = [
-    "S101", # Use of assert is controversial but in any case is useful with pytest
-    "D202", # This is controversial, it is useful to have a blank line after a docstring
-    "D203", # This is controversial, no need to have a blank line before a docstring
-    "D213", # This conflicts with D212 and violates PEP 257
-    "D406", # This rule is for non-Google style docstrings
-    "D407", # This rule is for non-Google style docstrings
-    "D408", # This rule is for non-Google style docstrings
-    "D409", # This rule is for non-Google style docstrings
+    "S101",   # Use of assert is controversial but in any case is useful with pytest
+    "D202",   # This is controversial, it is useful to have a blank line after a docstring
+    "D203",   # This is controversial, no need to have a blank line before a docstring
+    "D213",   # This conflicts with D212 and violates PEP 257
+    "D406",   # This rule is for non-Google style docstrings
+    "D407",   # This rule is for non-Google style docstrings
+    "D408",   # This rule is for non-Google style docstrings
+    "D409",   # This rule is for non-Google style docstrings
+    "RET504", # This is controversial, named returns are often clearer.
 ]
 line-length = 88
 target-version = "py311"
