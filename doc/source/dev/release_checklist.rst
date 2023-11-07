@@ -19,6 +19,8 @@ When releasing a new version of SuiteAs, the following steps should be taken:
 7. Release the package adding a tag named `v<version>`, e.g. `v1.3.2`.
 8. Push the release branch and the tag to the remote repository on GitHub. This will
    trigger a deployment on PyPI.
-9. Create a pull request to merge the release branch into `master`.
-10. Publish a GitHub release for the tag `v<version>` with the release notes from
+9. Create a pull request to merge the release branch into `main`.
+10. Merge the pull request into `main`, deleting the release branch.
+11. Create a pull request to merge the `main` branch into `develop`, and merge it.
+12. Publish a GitHub release for the tag `v<version>` with the release notes from
     `doc/source/release/notes.rst` and the changelog from `doc/source/changelog.rst`.
