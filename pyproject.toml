@@ -109,6 +109,10 @@ target-version = "py311"
 "tests/**/__init__.py" = [
     "D104", # __init__.py files do not need a docstring necessarily.
 ]
+"tests/**/*.py" = [
+    "D101", # Class docstrings are not necessary for tests.
+]
+
 
 [tool.ruff.pydocstyle]
 convention = "google"

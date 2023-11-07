@@ -4,6 +4,8 @@ from pathlib import Path
 
 from pydantic import BaseModel
 
+from suiteas.config import ProjConfig
+
 
 class Func(BaseModel):
     """A Python function."""
@@ -25,19 +27,27 @@ class Codebase(BaseModel):
 
 
 class TestClass(BaseModel):
-    """A pytest test class."""
+    """A Pytest test class."""
 
     name: str
 
 
 class TestFile(BaseModel):
-    """A pytest test file."""
+    """A Pytest test file."""
 
     path: Path
     test_classes: list[TestClass]
 
 
 class TestSuite(BaseModel):
-    """A pytest unit test suite."""
+    """A Pytest unit test suite."""
 
     test_files: list[TestFile]
+
+
+class Project(BaseModel):
+    """A Python project."""
+
+    codebase: Codebase
+    test_suite: TestSuite
+    config: ProjConfig

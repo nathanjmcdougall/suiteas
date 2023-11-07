@@ -1,7 +1,7 @@
 """File instances for testing purposes."""
 from pathlib import Path
 
-from suiteas.domain.codeobj import File, Func
+from suiteas.domain import File, Func
 
 
 def null_file(path: Path) -> File:

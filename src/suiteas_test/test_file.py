@@ -1,7 +1,7 @@
 """TestFile instances for testing purposes."""
 from pathlib import Path
 
-from suiteas.domain.codeobj import (
+from suiteas.domain import (
     TestClass,
     TestFile,
 )

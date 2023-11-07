@@ -1,10 +1,13 @@
 ...@config
 
-Main Codebase: {class: codebase}
-Test Suite: {class: codebase}
+Project: {
+  class: main_block
+  Main Codebase: {class: codebase}
+  Test Suite: {class: codebase}
+}
 
-Test Suite -> SuiteAs.Validate Suite Structure
-Test Suite -> SuiteAs.Enforce Suite Structure
+Project.Test Suite -> SuiteAs.Validate Suite Structure
+Project.Test Suite -> SuiteAs.Enforce Suite Structure
 
 Developer: {class: person}
 Developer -> SuiteAs.Validate Suite Structure
@@ -24,7 +27,7 @@ SuiteAs: {
 
 Pass/Fail: {class: stop}
 
-Main Codebase -> SuiteAs.Find New Suite Structure
+Project -> SuiteAs.Find New Suite Structure
 
 SuiteAs.Validate Suite Structure -> Pass/Fail
-SuiteAs.Enforce Suite Structure -> Test Suite
+SuiteAs.Enforce Suite Structure -> Project.Test Suite

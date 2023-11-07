@@ -1,12 +1,12 @@
-"""Configuration for the package to be analyzed."""
+"""Configuration for the Python project to be analyzed."""
 
 from pathlib import Path
 
 from pydantic import BaseModel
 
 
-class PkgConfig(BaseModel):
-    """Configuration for the package to be analyzed."""
+class ProjConfig(BaseModel):
+    """Configuration for the Python project to be analyzed."""
 
     pkg_names: list[str]
     tests_rel_path: Path = "tests"

@@ -1,7 +1,7 @@
 """Codebase instances for testing purposes."""
 from pathlib import Path
 
-from suiteas.domain.codeobj import (
+from suiteas.domain import (
     Codebase,
 )
 from suiteas_test.file import null_file, onefunc_file
