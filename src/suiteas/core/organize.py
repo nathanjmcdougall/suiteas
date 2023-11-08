@@ -5,7 +5,7 @@ from pathlib import Path
 from pydantic.alias_generators import to_pascal
 
 from suiteas.config import ProjConfig
-from suiteas.domain import Func, Project, TestClass, TestFile, TestSuite
+from suiteas.domain import Func, Project, PytestClass, PytestFile, PytestSuite
 
 TEST_FUNC_PREFIX = "test_"
 TEST_CLASS_PREFIX = "Test"
@@ -21,22 +21,22 @@ def _path_to_test_path(path: Path, proj_config: ProjConfig) -> Path:
     return test_path
 
 
-def _func_to_test_class(func: Func) -> TestClass:
+def _func_to_test_class(func: Func) -> PytestClass:
     """Convert a function to a test class."""
     funcname = to_pascal(func.name)
     name = f"{TEST_CLASS_PREFIX}{funcname}"
-    test_class = TestClass(name=name)
-    return test_class
+    pytest_class = PytestClass(name=name)
+    return pytest_class
 
 
-def organize_test_suite(project: Project) -> TestSuite:
+def organize_test_suite(project: Project) -> PytestSuite:
     """Get an ideally organized test suite structure for a Python Project."""
-    test_files = [
-        TestFile(
+    pytest_files = [
+        PytestFile(
             path=_path_to_test_path(file.path, project.config),
-            test_classes=[_func_to_test_class(func) for func in file.funcs],
+            pytest_classes=[_func_to_test_class(func) for func in file.funcs],
         )
         for file in project.codebase.files
     ]
 
-    return TestSuite(test_files=test_files)
+    return PytestSuite(pytest_files=pytest_files)

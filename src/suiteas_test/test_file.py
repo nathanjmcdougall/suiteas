@@ -2,17 +2,17 @@
 from pathlib import Path
 
 from suiteas.domain import (
-    TestClass,
-    TestFile,
+    PytestClass,
+    PytestFile,
 )
 
 
-def null_test_file(path: Path) -> TestFile:
-    """A file with no test classes at the given path."""
-    return TestFile(path=path, test_classes=[])
+def null_pytest_file(path: Path) -> PytestFile:
+    """A file with no Pytest classes at the given path."""
+    return PytestFile(path=path, pytest_classes=[])
 
 
-def oneclass_test_file(path: Path, test_class_name: str) -> TestFile:
-    """A file with a single test class at the given path, with the given name."""
-    test_class = TestClass(name=test_class_name)
-    return TestFile(path=path, test_classes=[test_class])
+def oneclass_pytest_file(path: Path, pytest_class_name: str) -> PytestFile:
+    """A file with a single Pytest class at the given path, with the given name."""
+    pytest_class = PytestClass(name=pytest_class_name)
+    return PytestFile(path=path, pytest_classes=[pytest_class])

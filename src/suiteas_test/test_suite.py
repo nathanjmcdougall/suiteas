@@ -2,23 +2,25 @@
 from pathlib import Path
 
 from suiteas.domain import (
-    TestSuite,
+    PytestSuite,
 )
-from suiteas_test.test_file import null_test_file, oneclass_test_file
+from suiteas_test.test_file import null_pytest_file, oneclass_pytest_file
 
 
-def empty_test_suite() -> TestSuite:
+def empty_test_suite() -> PytestSuite:
     """An empty test suite."""
-    return TestSuite(test_files=[])
+    return PytestSuite(pytest_files=[])
 
 
-def null_file_test_suite(path: Path) -> TestSuite:
+def null_file_test_suite(path: Path) -> PytestSuite:
     """A test suite with a single file (at the given path) with no test classes."""
-    return TestSuite(test_files=[null_test_file(path=path)])
+    return PytestSuite(pytest_files=[null_pytest_file(path=path)])
 
 
-def oneclass_file_testsuite(path: Path, test_class_name: str) -> TestSuite:
+def oneclass_file_testsuite(path: Path, test_class_name: str) -> PytestSuite:
     """A test suite with a single file (at the given path) with a single test class."""
-    return TestSuite(
-        test_files=[oneclass_test_file(path=path, test_class_name=test_class_name)],
+    return PytestSuite(
+        pytest_files=[
+            oneclass_pytest_file(path=path, pytest_class_name=test_class_name),
+        ],
     )

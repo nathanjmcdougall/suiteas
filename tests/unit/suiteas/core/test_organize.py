@@ -38,7 +38,7 @@ class TestOrganizeTestSuite:
         )
         project = Project(
             codebase=codebase,
-            test_suite=old_test_suite,
+            pytest_suite=old_test_suite,
             config=proj_config,
         )
         assert organize_test_suite(project) == new_test_suite

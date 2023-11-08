@@ -10,5 +10,9 @@ def empty_project(pkg_name: str) -> Project:
     codebase = empty_codebase()
     old_test_suite = empty_test_suite()
     proj_config = ProjConfig(pkg_names=[pkg_name])
-    project = Project(codebase=codebase, test_suite=old_test_suite, config=proj_config)
+    project = Project(
+        codebase=codebase,
+        pytest_suite=old_test_suite,
+        config=proj_config,
+    )
     return project

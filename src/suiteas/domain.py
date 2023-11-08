@@ -26,28 +26,28 @@ class Codebase(BaseModel):
     files: list[File]
 
 
-class TestClass(BaseModel):
+class PytestClass(BaseModel):
     """A Pytest test class."""
 
     name: str
 
 
-class TestFile(BaseModel):
+class PytestFile(BaseModel):
     """A Pytest test file."""
 
     path: Path
-    test_classes: list[TestClass]
+    pytest_classes: list[PytestClass]
 
 
-class TestSuite(BaseModel):
+class PytestSuite(BaseModel):
     """A Pytest unit test suite."""
 
-    test_files: list[TestFile]
+    pytest_files: list[PytestFile]
 
 
 class Project(BaseModel):
     """A Python project."""
 
     codebase: Codebase
-    test_suite: TestSuite
+    pytest_suite: PytestSuite
     config: ProjConfig

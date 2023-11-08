@@ -33,7 +33,11 @@ repos:
     hooks:
       - id: detect-missing-init
         args:
-          ["--create", "--python-folders", "src/suiteas,src/suiteas_test,tests"]
+          [
+            "--create",
+            "--python-folders",
+            "src/suiteas,src/suiteas_test,tests/unit,tests/integr",
+          ]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
