@@ -1,4 +1,4 @@
 # This project is invalid because it is missing test\unit\t82sedcy\__init__.py
 
 [tool.suiteas]
-pkg_names = "t82sedcy"
+pkg_names = ["t82sedcy"]

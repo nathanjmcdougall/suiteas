@@ -1,2 +1,2 @@
 [tool.suiteas]
-pkg_names = "af8o7tt1"
+pkg_names = ["af8o7tt1"]
