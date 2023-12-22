@@ -31,7 +31,12 @@ def get_config(proj_dir: Path) -> ProjConfig:
 
 def get_codebase(proj_dir: Path, config: ProjConfig) -> Codebase:
     """Read the codebase for a project."""
-    _ = proj_dir, config
+    src_dir = proj_dir / config.src_rel_path
+
+    if not src_dir.exists():
+        msg = f"Could not find {src_dir} in {proj_dir}"
+        raise FileNotFoundError(msg)
+
     raise NotImplementedError
 
 
