@@ -95,9 +95,15 @@ ignore = [
     "D408",   # This rule is for non-Google style docstrings
     "D409",   # This rule is for non-Google style docstrings
     "RET504", # This is controversial, named returns are often clearer.
+    "C408",   # This is controversial, calls to `dict` can be more idiomatic than {}.
+    "ANN101", # This is controversial, `self` doesn't need a verbose type annotation.
+    "ANN102", # This is controversial, `cls` doesn't need a verbose type annotation.
 ]
 line-length = 88
 target-version = "py311"
+extend-exclude = [
+    "tests/assets/**",
+]
 
 [tool.ruff.extend-per-file-ignores]
 "src/suiteas/**/__init__.py" = [
@@ -111,6 +117,8 @@ target-version = "py311"
 ]
 "tests/**/*.py" = [
     "D101", # Class docstrings are not necessary for tests.
+    "D102", # Method docstrings are not necessary for tests.
+    "D100", # Module docstrings are not necessary for tests.
 ]
 
 

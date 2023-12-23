@@ -12,6 +12,11 @@ class Func(BaseModel):
 
     name: str
 
+    @property
+    def is_underscored(self) -> bool:
+        """Return whether the function name starts with an underscore."""
+        return self.name.startswith("_")
+
 
 class File(BaseModel):
     """A Python file."""

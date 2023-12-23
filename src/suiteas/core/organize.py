@@ -11,7 +11,7 @@ TEST_FUNC_PREFIX = "test_"
 TEST_CLASS_PREFIX = "Test"
 
 
-def _path_to_test_path(path: Path, proj_config: ProjConfig) -> Path:
+def _path_to_test_path(*, path: Path, proj_config: ProjConfig) -> Path:
     """Convert a path to a test path."""
     rel_path = path.relative_to(proj_config.src_rel_path)
     test_parent_path = (
@@ -33,7 +33,10 @@ def organize_test_suite(project: Project) -> PytestSuite:
     """Get an ideally organized test suite structure for a Python Project."""
     pytest_files = [
         PytestFile(
-            path=_path_to_test_path(file.path, project.config),
+            path=_path_to_test_path(
+                path=file.path,
+                proj_config=project.config,
+            ),
             pytest_classes=[_func_to_test_class(func) for func in file.funcs],
         )
         for file in project.codebase.files

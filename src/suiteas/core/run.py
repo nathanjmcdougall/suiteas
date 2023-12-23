@@ -1,4 +1,5 @@
 """Run the suiteas command line interface."""
+
 import sys
 import tomllib
 from collections.abc import Sequence
@@ -6,10 +7,19 @@ from pathlib import Path
 from typing import Any
 
 from suiteas.config import ProjConfig
+from suiteas.core.read.file import get_file
 from suiteas.core.validate import is_valid_test_suite
-from suiteas.domain import Codebase, Project, PytestSuite
+from suiteas.domain import Codebase, Project, PytestFile, PytestSuite
 
 TOML_NAME = "pyproject.toml"
+
+
+class InvalidTestSuiteError(Exception):
+    """An invalid test suite was found."""
+
+
+class ConfigFileError(ValueError):
+    """An invalid configuration file was found."""
 
 
 def get_config(proj_dir: Path) -> ProjConfig:
@@ -24,6 +34,9 @@ def get_config(proj_dir: Path) -> ProjConfig:
     parsed_toml: dict[str, Any] = tomllib.loads(pyproject_contents)
     config_by_tool: dict[str, Any] = parsed_toml.get("tool", {})
     config_kwargs = config_by_tool.get("suiteas", {})
+    if not config_kwargs:
+        msg = f"Could not find [tool.suiteas] configuration section in {TOML_NAME}"
+        raise ConfigFileError(msg)
     config = ProjConfig(**config_kwargs)
 
     return config
@@ -34,16 +47,30 @@ def get_codebase(proj_dir: Path, config: ProjConfig) -> Codebase:
     src_dir = proj_dir / config.src_rel_path
 
     if not src_dir.exists():
-        msg = f"Could not find {src_dir} in {proj_dir}"
+        msg = f"Could not find {src_dir}"
         raise FileNotFoundError(msg)
 
-    raise NotImplementedError
+    files = [get_file(path) for path in src_dir.glob("**/*.py")]
+
+    return Codebase(files=files)
 
 
 def get_pytest_suite(proj_dir: Path, config: ProjConfig) -> PytestSuite:
-    """Read the pytest suite for a project."""
-    _ = proj_dir, config
-    raise NotImplementedError
+    """Read the pytest unit test suite for a project."""
+    unit_dir = proj_dir / config.tests_rel_path / config.unittest_dir_name
+
+    if not unit_dir.exists():
+        msg = f"Could not find {unit_dir}"
+        raise FileNotFoundError(msg)
+
+    pytest_files = [get_pytest_file(path) for path in unit_dir.glob("**/*.py")]
+
+    return PytestSuite(pytest_files=pytest_files)
+
+
+def get_pytest_file(path: Path) -> PytestFile:
+    """Read a pytest test file."""
+    return PytestFile(path=path, pytest_classes=[])
 
 
 def get_project(proj_dir: Path) -> Project:
@@ -60,8 +87,8 @@ def get_project(proj_dir: Path) -> Project:
     return project
 
 
-def _run_suiteas(argv: Sequence[str]) -> None:
-    """Run the suiteas command line interface."""
+def run_suiteas_main(argv: Sequence[str]) -> None:
+    """Run the suiteas command line interface without a system exit."""
     if len(argv) == 0:
         proj_dir = "."
     else:
@@ -71,16 +98,17 @@ def _run_suiteas(argv: Sequence[str]) -> None:
     project = get_project(proj_dir)
 
     if not is_valid_test_suite(project):
-        sys.exit(1)
+        msg = f"Invalid test suite found in {proj_dir}"
+        raise InvalidTestSuiteError(msg)
 
 
 def run_suiteas(argv: Sequence[str] | None = None) -> None:
     """Run the suiteas command line interface."""
 
     if argv is None:
-        raise NotImplementedError
+        argv = []
 
     try:
-        _run_suiteas(argv)
-    except KeyboardInterrupt:
+        run_suiteas_main(argv)
+    except (KeyboardInterrupt, InvalidTestSuiteError):
         sys.exit(1)
