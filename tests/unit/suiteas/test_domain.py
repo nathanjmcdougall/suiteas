@@ -24,7 +24,7 @@ class TestFunc:
 
 class TestFile:
     def test_init(self) -> None:
-        File(path=Path("example.py"), funcs=[])
+        File(path=Path("example.py"), funcs=[], clses=[])
 
 
 class TestCodebase:

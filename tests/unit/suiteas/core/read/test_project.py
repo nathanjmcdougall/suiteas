@@ -22,7 +22,11 @@ class TestGetProject:
         expected_project = Project(
             codebase=Codebase(
                 files=[
-                    File(path=proj_dir / "src" / "af8o7tt1" / "__init__.py", funcs=[]),
+                    File(
+                        path=proj_dir / "src" / "af8o7tt1" / "__init__.py",
+                        funcs=[],
+                        clses=[],
+                    ),
                 ],
             ),
             pytest_suite=PytestSuite(
@@ -67,6 +71,7 @@ class TestGetProject:
                     File(
                         path=proj_dir / "src" / "pp8cadfs" / "__init__.py",
                         funcs=[Func(name="hello")],
+                        clses=[],
                     ),
                 ],
             ),

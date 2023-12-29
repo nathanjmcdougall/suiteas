@@ -12,4 +12,4 @@ def null_file(path: Path) -> File:
 def onefunc_file(path: Path, func_name: str) -> File:
     """A file with a single function at the given path."""
     func = Func(name=func_name)
-    return File(path=path, funcs=[func])
+    return File(path=path, funcs=[func], clses=[])

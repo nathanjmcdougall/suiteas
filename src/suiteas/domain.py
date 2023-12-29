@@ -7,15 +7,23 @@ from pydantic import BaseModel
 from suiteas.config import ProjConfig
 
 
-class Func(BaseModel):
-    """A Python function."""
+class TestableCodeObject(BaseModel):
+    """A testable code object."""
 
     name: str
 
     @property
     def is_underscored(self) -> bool:
-        """Return whether the function name starts with an underscore."""
+        """Return whether the object's name starts with an underscore."""
         return self.name.startswith("_")
+
+
+class Class(TestableCodeObject):
+    """A Python class."""
+
+
+class Func(TestableCodeObject):
+    """A Python function."""
 
 
 class File(BaseModel):
@@ -23,6 +31,7 @@ class File(BaseModel):
 
     path: Path
     funcs: list[Func]
+    clses: list[Class]
 
 
 class Codebase(BaseModel):
