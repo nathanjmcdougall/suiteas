@@ -12,7 +12,10 @@ class AnalyzedFileSyntaxError(SyntaxError):
     """Raised when the file being analyzed has a syntax error."""
 
 
-_FUNC_DEF = (ast.FunctionDef, ast.AsyncFunctionDef, ast.Lambda)
+_FUNC_DEF = (
+    ast.FunctionDef,
+    ast.AsyncFunctionDef,
+)
 _CLS_DEF = (ast.ClassDef,)
 _STMT = (
     ast.Return,
@@ -30,6 +33,7 @@ _STMT = (
     ast.Break,
     ast.Continue,
     ast.Match,
+    ast.Lambda,
 )
 _TYPING = (ast.AnnAssign,)
 _EXPR = (ast.expr, ast.Expr)

@@ -85,6 +85,32 @@ class TestGetFile:
         assert type(file) == File
         assert file.model_dump() == expected_file.model_dump()
 
+    def test_lambda_func(self, files_parent_dir: Path) -> None:
+        file_path = files_parent_dir / "lambda_func.py"
+        file = get_file(file_path)
+
+        expected_file = File(
+            path=file_path,
+            funcs=[],
+            clses=[],
+        )
+
+        assert type(file) == File
+        assert file.model_dump() == expected_file.model_dump()
+
+    def test_multi(self, files_parent_dir: Path) -> None:
+        file_path = files_parent_dir / "multi.py"
+        file = get_file(file_path)
+
+        expected_file = File(
+            path=file_path,
+            funcs=[Func(name="hello"), Func(name="goodbye")],
+            clses=[Class(name="Banana")],
+        )
+
+        assert type(file) == File
+        assert file.model_dump() == expected_file.model_dump()
+
     @pytest.mark.skipif(FAST_TESTS, reason="Test is slow.")
     @pytest.mark.parametrize("seed", range(10))
     def test_random_file(self, tmp_path: Path, seed: int) -> None:
