@@ -1,0 +1,7 @@
+[project]
+name = "pr4a7g7m"
+version="0.1.0"
+
+[tool.suiteas]
+tests_rel_path = "tests"
+unittest_dir_name = "unit"

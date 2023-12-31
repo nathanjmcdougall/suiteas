@@ -1,0 +1,6 @@
+[tool.suiteas]
+pkg_names=["foo", "bar"]
+src_rel_path = ["mysrc"]
+tests_rel_path = ["mytests"]
+unittest_dir_name = ["myunit"]
+
