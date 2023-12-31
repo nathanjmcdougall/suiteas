@@ -1,6 +1,7 @@
 """Value objects for code instances."""
 
 from pathlib import Path
+from typing import Any
 
 from pydantic import BaseModel
 
@@ -32,6 +33,13 @@ class File(BaseModel):
     path: Path
     funcs: list[Func]
     clses: list[Class]
+
+    def __lt__(self, other: Any) -> bool:
+        """Compre files alphabetically by their paths."""
+        if not isinstance(other, File):
+            return NotImplemented
+
+        return self.path <= other.path
 
 
 class Codebase(BaseModel):

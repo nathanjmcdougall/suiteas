@@ -15,5 +15,6 @@ def get_codebase(proj_dir: Path, config: ProjConfig) -> Codebase:
         raise FileNotFoundError(msg)
 
     files = [get_file(path) for path in src_dir.glob("**/*.py")]
+    files.sort()
 
     return Codebase(files=files)

@@ -100,6 +100,8 @@ ignore = [
     "C408",   # This is controversial, calls to `dict` can be more idiomatic than {}.
     "ANN101", # This is controversial, `self` doesn't need a verbose type annotation.
     "ANN102", # This is controversial, `cls` doesn't need a verbose type annotation.
+    "ANN401", # This is too strict for dunder methods.
+    "PTH201", # This is controversial, when dealing with relative paths "." is clearer.
 ]
 line-length = 88
 target-version = "py311"

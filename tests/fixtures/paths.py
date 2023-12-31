@@ -20,11 +20,17 @@ def test_assets_dir(root_dir: Path) -> Path:
 
 @pytest.fixture(scope="session")
 def projs_parent_dir(test_assets_dir: Path) -> Path:
-    """Fixture for valid project directories."""
+    """Fixture for a directory containing Python project folders."""
     return test_assets_dir / "projects"
 
 
 @pytest.fixture(scope="session")
 def files_parent_dir(test_assets_dir: Path) -> Path:
-    """Fixture for valid project directories."""
+    """Fixture for a directory containing Python files."""
     return test_assets_dir / "files"
+
+
+@pytest.fixture(scope="session")
+def config_files_parent_dir(test_assets_dir: Path) -> Path:
+    """Fixture for a directory with TOML pyproject.toml style configuration files."""
+    return test_assets_dir / "config_files"
