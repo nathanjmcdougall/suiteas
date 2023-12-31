@@ -1,0 +1,13 @@
+[project]
+name = "example"
+version = "0.1.0"
+description = "Example"
+
+[tool.suiteas]
+pkg_names=["foo", "bar"]
+src_rel_path = "mysrc"
+tests_rel_path = "mytests"
+unittest_dir_name = "myunit"
+
+[tool.setuptools]
+packages = ["foo_other", "bar_other"]

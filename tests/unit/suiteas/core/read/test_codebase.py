@@ -6,11 +6,21 @@ from suiteas.domain import Class, Codebase, File, Func, ProjConfig
 
 class TestGetCodebase:
     def test_trivial_pass(self, projs_parent_dir: Path) -> None:
-        codebase = get_codebase(
-            projs_parent_dir / "trivial_pass",
-            config=ProjConfig(pkg_names=["af8o7tt1"]),
+        proj_dir = projs_parent_dir / "trivial_pass"
+        config = ProjConfig(pkg_names=["af8o7tt1"])
+        pkg_dir = proj_dir / config.src_rel_path / "af8o7tt1"
+
+        codebase = get_codebase(proj_dir, config=config)
+
+        assert codebase == Codebase(
+            files=[
+                File(
+                    path=pkg_dir / "__init__.py",
+                    funcs=[],
+                    clses=[],
+                ),
+            ],
         )
-        assert codebase == Codebase(files=[])
 
     def test_one_func_no_test(self, projs_parent_dir: Path) -> None:
         proj_dir = projs_parent_dir / "one_func_no_test"
@@ -19,7 +29,7 @@ class TestGetCodebase:
 
         codebase = get_codebase(proj_dir, config=config)
 
-        expected_codebase = Codebase(
+        assert codebase == Codebase(
             files=[
                 File(
                     path=pkg_dir / "__init__.py",
@@ -28,7 +38,6 @@ class TestGetCodebase:
                 ),
             ],
         )
-        assert codebase == expected_codebase
 
     def test_two_files(self, projs_parent_dir: Path) -> None:
         proj_dir = projs_parent_dir / "two_files"
@@ -37,7 +46,7 @@ class TestGetCodebase:
 
         codebase = get_codebase(proj_dir, config=config)
 
-        expected_codebase = Codebase(
+        assert codebase == Codebase(
             files=sorted(
                 [
                     File(
@@ -58,4 +67,3 @@ class TestGetCodebase:
                 ],
             ),
         )
-        assert codebase == expected_codebase

@@ -48,7 +48,7 @@ def get_config(proj_dir: Path) -> ProjConfig:
         raise FileNotFoundError(msg)
 
     if unittest_dir_name is None:
-        unittest_dir_name = _heuristic_unittest_dir_name(proj_dir)
+        unittest_dir_name = _heuristic_unittest_dir_name(tests_path)
 
     return ProjConfig(
         pkg_names=pkg_names,
