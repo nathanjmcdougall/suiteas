@@ -48,19 +48,23 @@ def get_config(proj_dir: Path) -> ProjConfig:
 
     if src_rel_path is None:
         src_rel_path = _heuristic_src_rel_path(proj_dir=proj_dir, pkg_names=pkg_names)
-
     _validate_src_rel_path(src_rel_path, proj_dir=proj_dir)
 
+    src_dir = proj_dir / src_rel_path
+
     if pkg_names is None:
-        pkg_names = _heuristic2_pkg_names()
+        pkg_names = _heuristic2_pkg_names(src_dir=src_dir)
+    pkg_names.sort()
+    _validate_pkg_names(pkg_names, src_dir=src_dir)
 
     if tests_rel_path is None:
-        tests_rel_path = _heuristic_tests_rel_path()
-
+        tests_rel_path = _heuristic_tests_rel_path(proj_dir=proj_dir)
     _validate_tests_rel_path(tests_rel_path, proj_dir=proj_dir)
 
     if unittest_dir_name is None:
-        unittest_dir_name = _heuristic_unittest_dir_name()
+        unittest_dir_name = _heuristic_unittest_dir_name(
+            tests_dir=proj_dir / tests_rel_path,
+        )
 
     return ProjConfig(
         pkg_names=pkg_names,
@@ -74,9 +78,10 @@ def _heuristic_src_rel_path(*, proj_dir: Path, pkg_names: list[str] | None) -> P
     if (proj_dir / "src").exists():
         return Path("src")
 
-    if pkg_names is not None and len(pkg_names) == 1:
-        (pkg_name,) = pkg_names
-        if (proj_dir / pkg_name).exists():
+    if pkg_names is not None:
+        for pkg_name in pkg_names:
+            if not (proj_dir / pkg_name).exists():
+                break
             return Path(".")
 
     msg = (
@@ -98,7 +103,15 @@ def _heuristic1_pkg_names(*, toml_config: TOMLProjConfig) -> list[str] | None:
     return None
 
 
-def _heuristic2_pkg_names() -> list[str]:
+def _heuristic2_pkg_names(*, src_dir: Path) -> list[str]:
+    package_names = [
+        path.name
+        for path in src_dir.iterdir()
+        if path.is_dir() and path.name.isidentifier()
+    ]
+    if package_names:
+        return package_names
+
     msg = (
         "Could not automatically determine package names for project. "
         "Please manually configure this in pyproject.toml as follows:\n"
@@ -108,7 +121,10 @@ def _heuristic2_pkg_names() -> list[str]:
     raise ConfigFileError(msg)
 
 
-def _heuristic_tests_rel_path() -> Path:
+def _heuristic_tests_rel_path(*, proj_dir: Path) -> Path:
+    if (proj_dir / "tests").exists():
+        return Path("tests")
+
     msg = (
         "Could not automatically determine tests directory for project. "
         "Please manually configure this in pyproject.toml as follows:\n"
@@ -118,7 +134,10 @@ def _heuristic_tests_rel_path() -> Path:
     raise ConfigFileError(msg)
 
 
-def _heuristic_unittest_dir_name() -> Path:
+def _heuristic_unittest_dir_name(*, tests_dir: Path) -> Path:
+    if (tests_dir / "unit").exists():
+        return Path("unit")
+
     msg = (
         "Could not automatically determine unit tests directory for project. "
         "Please manually configure this in pyproject.toml as follows:\n"
@@ -133,6 +152,14 @@ def _validate_src_rel_path(src_rel_path: Path, *, proj_dir: Path) -> None:
     if not src_path.exists():
         msg = f"Could not find source directory {src_path}"
         raise FileNotFoundError(msg)
+
+
+def _validate_pkg_names(pkg_names: list[str], *, src_dir: Path) -> None:
+    for pkg_name in pkg_names:
+        pkg_path = src_dir / pkg_name
+        if not pkg_path.exists():
+            msg = f"Could not find package directory {pkg_path}"
+            raise FileNotFoundError(msg)
 
 
 def _validate_tests_rel_path(tests_rel_path: Path, *, proj_dir: Path) -> None:

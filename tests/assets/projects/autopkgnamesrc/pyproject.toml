@@ -1,0 +1,4 @@
+[tool.suiteas]
+pkg_names = ["ixvm0b6u"]
+tests_rel_path = "tests"
+unittest_dir_name = "unit"

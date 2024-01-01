@@ -1,0 +1,6 @@
+[tool.suiteas]
+tests_rel_path = "tests"
+unittest_dir_name = "unit"
+
+[tool.setuptools]
+packages = ["euul5ld4"]

@@ -10,6 +10,7 @@ from suiteas.core.read.config import (
     get_config,
     get_toml_config,
 )
+from suiteas.domain import ProjConfig
 
 
 class TestGetTOMLConfig:
@@ -97,15 +98,49 @@ class TestGetConfig:
 
     def test_autosrc(self, projs_parent_dir: Path) -> None:
         """Test we can automatically find the source folder at src."""
-        get_config(projs_parent_dir / "autosrc")
+        assert get_config(projs_parent_dir / "autosrc") == ProjConfig(pkg_names=[])
 
-    def test_autonamesrc(self, projs_parent_dir: Path) -> None:
+    def test_autopkgnamesrc(self, projs_parent_dir: Path) -> None:
+        """Test we can automatically find the source folder at pkg name."""
+        assert get_config(projs_parent_dir / "autopkgnamesrc") == ProjConfig(
+            pkg_names=["ixvm0b6u"],
+            src_rel_path=".",
+        )
+
+    def test_autoprojnamesrc(self, projs_parent_dir: Path) -> None:
         """Test we can determine the source folder is the name of the project."""
-        get_config(projs_parent_dir / "autonamesrc")
+        assert get_config(projs_parent_dir / "autoprojnamesrc") == ProjConfig(
+            pkg_names=["pr4a7g7m"],
+            src_rel_path=".",
+        )
 
-    def test_allauto(self, projs_parent_dir: Path) -> None:
+    def test_autosetuptoolssrc(self, projs_parent_dir: Path) -> None:
+        """Test we can determine the source folder is the name setuptools pkg."""
+        assert get_config(projs_parent_dir / "autosetuptoolssrc") == ProjConfig(
+            pkg_names=["euul5ld4"],
+            src_rel_path=".",
+        )
+
+    def test_automultipkgnamesrc(self, projs_parent_dir: Path) -> None:
+        assert get_config(projs_parent_dir / "automultipkgnamesrc") == ProjConfig(
+            pkg_names=["g5qyyvdv", "zhd1kcvi"],
+            src_rel_path=".",
+        )
+
+    def test_automultisetuptoolssrc(self, projs_parent_dir: Path) -> None:
+        assert get_config(projs_parent_dir / "automultisetuptoolssrc") == ProjConfig(
+            pkg_names=["lh0fehzp", "z00rc6ru"],
+            src_rel_path=".",
+        )
+
+    def test_autoall(self, projs_parent_dir: Path) -> None:
         """Test we can automatically determine everything without pyproject.toml."""
-        raise NotImplementedError
+        assert get_config(projs_parent_dir / "autoall") == ProjConfig(
+            pkg_names=["p8eovx9k"],
+            src_rel_path=Path("src"),
+            tests_rel_path=Path("tests"),
+            unittest_dir_name=Path("unit"),
+        )
 
     def test_srcconfig_only(self, projs_parent_dir: Path) -> None:
         with pytest.raises(
