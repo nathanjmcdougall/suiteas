@@ -12,3 +12,4 @@ class ProjConfig(BaseModel):
     src_rel_path: Path = Path("src")
     tests_rel_path: Path = Path("tests")
     unittest_dir_name: Path = Path("unit")
+    use_consolidated_tests_dir: bool = False

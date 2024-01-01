@@ -5,10 +5,8 @@ from pathlib import Path
 from pydantic.alias_generators import to_pascal
 
 from suiteas.config import ProjConfig
+from suiteas.core.pytest import TEST_CLASS_PREFIX, TEST_FUNC_PREFIX
 from suiteas.domain import Func, Project, PytestClass, PytestFile, PytestSuite
-
-TEST_FUNC_PREFIX = "test_"
-TEST_CLASS_PREFIX = "Test"
 
 
 def _path_to_test_path(*, path: Path, proj_config: ProjConfig) -> Path:
@@ -17,7 +15,7 @@ def _path_to_test_path(*, path: Path, proj_config: ProjConfig) -> Path:
     test_parent_path = (
         proj_config.tests_rel_path / proj_config.unittest_dir_name / rel_path.parent
     )
-    test_path = test_parent_path / f"{TEST_FUNC_PREFIX}{path.stem}.py"
+    test_path = test_parent_path / f"{TEST_FUNC_PREFIX}_{path.stem}.py"
     return test_path
 
 

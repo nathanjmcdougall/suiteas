@@ -55,22 +55,41 @@ def get_config(proj_dir: Path) -> ProjConfig:
     if pkg_names is None:
         pkg_names = _heuristic2_pkg_names(src_dir=src_dir)
     pkg_names.sort()
-    _validate_pkg_names(pkg_names, src_dir=src_dir)
 
     if tests_rel_path is None:
         tests_rel_path = _heuristic_tests_rel_path(proj_dir=proj_dir)
     _validate_tests_rel_path(tests_rel_path, proj_dir=proj_dir)
+    tests_dir = proj_dir / tests_rel_path
 
     if unittest_dir_name is None:
-        unittest_dir_name = _heuristic_unittest_dir_name(
-            tests_dir=proj_dir / tests_rel_path,
+        unittest_dir_name = _heuristic1_unittest_dir_name(
+            tests_dir=tests_dir,
         )
+    use_consolidated_tests_dir = _is_consolidated_tests_dir(
+        pkg_names=pkg_names,
+        tests_dir=tests_dir,
+        unittest_dir_name=unittest_dir_name,
+    )
+    if unittest_dir_name is None:
+        unittest_dir_name = _heuristic2_unittest_dir_name(
+            use_consolidated_tests_dir=use_consolidated_tests_dir,
+        )
+    unittests_dir = tests_dir / unittest_dir_name
+    _validate_unittest_dir_name(unittests_dir=unittests_dir)
+
+    _validate_pkg_names(
+        pkg_names,
+        src_dir=src_dir,
+        unittests_dir=unittests_dir,
+        use_consolidated_tests_dir=use_consolidated_tests_dir,
+    )
 
     return ProjConfig(
         pkg_names=pkg_names,
         src_rel_path=src_rel_path,
         tests_rel_path=tests_rel_path,
         unittest_dir_name=unittest_dir_name,
+        use_consolidated_tests_dir=use_consolidated_tests_dir,
     )
 
 
@@ -134,9 +153,16 @@ def _heuristic_tests_rel_path(*, proj_dir: Path) -> Path:
     raise ConfigFileError(msg)
 
 
-def _heuristic_unittest_dir_name(*, tests_dir: Path) -> Path:
+def _heuristic1_unittest_dir_name(*, tests_dir: Path) -> Path | None:
     if (tests_dir / "unit").exists():
         return Path("unit")
+
+    return None
+
+
+def _heuristic2_unittest_dir_name(*, use_consolidated_tests_dir: bool) -> Path:
+    if use_consolidated_tests_dir:
+        return Path(".")
 
     msg = (
         "Could not automatically determine unit tests directory for project. "
@@ -147,6 +173,21 @@ def _heuristic_unittest_dir_name(*, tests_dir: Path) -> Path:
     raise ConfigFileError(msg)
 
 
+def _is_consolidated_tests_dir(
+    *,
+    pkg_names: list[str],
+    tests_dir: Path,
+    unittest_dir_name: Path,
+) -> bool:
+    if len(pkg_names) == 1:
+        (pkg_name,) = pkg_names
+        if (unittest_dir_name is None or unittest_dir_name == Path(".")) and not (
+            tests_dir / pkg_name
+        ).exists():
+            return True
+    return False
+
+
 def _validate_src_rel_path(src_rel_path: Path, *, proj_dir: Path) -> None:
     src_path = proj_dir / src_rel_path
     if not src_path.exists():
@@ -154,12 +195,32 @@ def _validate_src_rel_path(src_rel_path: Path, *, proj_dir: Path) -> None:
         raise FileNotFoundError(msg)
 
 
-def _validate_pkg_names(pkg_names: list[str], *, src_dir: Path) -> None:
+def _validate_pkg_names(
+    pkg_names: list[str],
+    *,
+    src_dir: Path,
+    unittests_dir: Path,
+    use_consolidated_tests_dir: bool,
+) -> None:
+    if use_consolidated_tests_dir:
+        return
+
     for pkg_name in pkg_names:
-        pkg_path = src_dir / pkg_name
-        if not pkg_path.exists():
-            msg = f"Could not find package directory {pkg_path}"
+        pkg_dir = src_dir / pkg_name
+        if not pkg_dir.exists():
+            msg = f"Could not find package directory of {pkg_name} at {pkg_dir}"
             raise FileNotFoundError(msg)
+
+        test_pkg_dir = unittests_dir / pkg_name
+        if not test_pkg_dir.exists():
+            msg = f"Could not find unit test directory of {pkg_name} at {test_pkg_dir}"
+            raise FileNotFoundError(msg)
+
+
+def _validate_unittest_dir_name(unittests_dir: Path) -> None:
+    if not unittests_dir.exists():
+        msg = f"Could not find unit tests directory {unittests_dir}"
+        raise FileNotFoundError(msg)
 
 
 def _validate_tests_rel_path(tests_rel_path: Path, *, proj_dir: Path) -> None:
