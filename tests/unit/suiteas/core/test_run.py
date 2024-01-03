@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from suiteas.core.run import run_suiteas_main
+from suiteas.core.run import print_violations, run_suiteas, run_suiteas_main
 
 
 class TestRunSuiteAsMain:
@@ -13,9 +13,9 @@ class TestRunSuiteAsMain:
 
 class TestPrintViolations:
     def test_nothing(self) -> None:
-        assert True
+        _ = print_violations
 
 
 class TestRunSuiteAs:
     def test_nothing(self) -> None:
-        assert True
+        _ = run_suiteas

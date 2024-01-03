@@ -2,7 +2,6 @@ from pathlib import Path
 
 import pytest
 
-from suiteas.core.run import get_project
 from suiteas.domain import (
     Codebase,
     File,
@@ -12,6 +11,7 @@ from suiteas.domain import (
     PytestFile,
     PytestSuite,
 )
+from suiteas.read.project import get_project
 
 
 class TestGetProject:

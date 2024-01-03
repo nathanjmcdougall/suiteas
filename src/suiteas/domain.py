@@ -11,6 +11,7 @@ class TestableCodeObject(BaseModel):
     """A testable code object."""
 
     name: str
+    full_name: str
     line_num: int
     char_offset: int
 
@@ -36,6 +37,7 @@ class File(BaseModel):
     path: Path
     funcs: list[Func]
     clses: list[Class]
+    imported_objs: list[str]
 
 
 class Codebase(BaseModel):
@@ -56,6 +58,7 @@ class PytestFile(BaseModel):
 
     path: Path
     pytest_classes: list[PytestClass]
+    imported_objs: list[str]
 
 
 class PytestSuite(BaseModel):

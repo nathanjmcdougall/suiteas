@@ -5,7 +5,12 @@ from pydantic.alias_generators import to_snake
 
 from suiteas.core.path import path_to_test_path
 from suiteas.core.pytest import TEST_CLASS_PREFIX
-from suiteas.core.violations import Violation, empty_pytest_class, missing_test_func
+from suiteas.core.violations import (
+    Violation,
+    empty_pytest_class,
+    missing_test_func,
+    unimported_tested_func,
+)
 from suiteas.domain import Func, Project, PytestFile
 
 
@@ -19,7 +24,6 @@ def get_violations(project: Project) -> list[Violation]:
         for pytest_file in project.pytest_suite.pytest_files
     }
 
-    # Check SUI001: missing-test-module
     for file in project.codebase.files:
         if not file.funcs:
             continue
@@ -34,6 +38,8 @@ def get_violations(project: Project) -> list[Violation]:
         for func in file.funcs:
             if func.is_underscored:
                 continue
+
+            # Check SUI001: missing-test-module
             if not _pytest_file_has_func_tests(pytest_file=pytest_file, func=func):
                 violations.append(
                     Violation(
@@ -43,6 +49,24 @@ def get_violations(project: Project) -> list[Violation]:
                         char_offset=func.char_offset,
                         fmt_info=dict(
                             func=func.name,
+                            pytest_file_rel_posix=test_rel_path.as_posix(),
+                        ),
+                    ),
+                )
+
+            # Check SUI003: unimported-tested-func
+            if not _pytest_file_imports_func(
+                pytest_file=pytest_file,
+                func=func,
+            ):
+                violations.append(
+                    Violation(
+                        viol_cat=unimported_tested_func,
+                        rel_path=file.path.relative_to(project.proj_dir),
+                        line_num=func.line_num,
+                        char_offset=func.char_offset,
+                        fmt_info=dict(
+                            func_fullname=func.full_name,
                             pytest_file_rel_posix=test_rel_path.as_posix(),
                         ),
                     ),
@@ -79,3 +103,15 @@ def _pytest_file_has_func_tests(
         ) == to_snake(TEST_CLASS_PREFIX) + func.name.replace("_", ""):
             return True
     return False
+
+
+def _pytest_file_imports_func(
+    *,
+    pytest_file: PytestFile | None,
+    func: Func,
+) -> bool:
+    """Check whether a pytest file imports a function."""
+    if pytest_file is None:
+        return True  # Tautologically
+
+    return func.full_name in pytest_file.imported_objs

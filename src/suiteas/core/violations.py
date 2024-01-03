@@ -35,3 +35,9 @@ empty_pytest_class = ViolationCategory(
     name="empty-pytest-class",
     description="{pytest_class_name} has no tests",
 )
+
+unimported_tested_func = ViolationCategory(
+    suiteas_code=3,
+    name="unimported-tested-func",
+    description="{func_fullname} is not imported in {pytest_file_rel_posix}",
+)

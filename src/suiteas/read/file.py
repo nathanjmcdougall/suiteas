@@ -24,8 +24,6 @@ _STMT = (
     ast.AugAssign,
     ast.Raise,
     ast.Assert,
-    ast.Import,
-    ast.ImportFrom,
     ast.Global,
     ast.Nonlocal,
     ast.Expr,
@@ -34,6 +32,10 @@ _STMT = (
     ast.Continue,
     ast.Match,
     ast.Lambda,
+)
+_IMPORT = (
+    ast.Import,
+    ast.ImportFrom,
 )
 _TYPING = (ast.AnnAssign,)
 _EXPR = (ast.expr, ast.Expr)
@@ -49,7 +51,7 @@ _FLOW_CTRL = (
 )
 
 
-def get_file(path: Path) -> File:
+def get_file(path: Path, *, module_name: str) -> File:
     """Read a file."""
     if not path.exists():
         msg = f"Could not find {path}"
@@ -62,37 +64,60 @@ def get_file(path: Path) -> File:
         except SyntaxError as err:
             msg = f"Syntax error in {path}: {err}"
             raise AnalyzedFileSyntaxError(msg) from None
-        funcs, clses = _get_funcs_clses_from_tree(tree)
+        funcs, clses, imported_objs = _parse_tree(tree, module_name=module_name)
 
-    return File(path=path, funcs=funcs, clses=clses)
+    return File(path=path, funcs=funcs, clses=clses, imported_objs=imported_objs)
 
 
-def _get_funcs_clses_from_tree(
+def _parse_tree(  # noqa: PLR0912, C901
     tree: ast.Module | Union[_FLOW_CTRL],  # noqa: UP007 since Union[(x,y)] is OK
-) -> tuple[list[Func], list[Class]]:
+    *,
+    module_name: str,
+) -> tuple[list[Func], list[Class], list[str]]:
     """Get a File object from an ast tree."""
     funcs = []
     clses = []
+    imported_objs = []
 
     for node in tree.body:
         if isinstance(node, _FLOW_CTRL):
-            subfuncs, subclses = _get_funcs_clses_from_tree(node)
+            subfuncs, subclses, subimported_objs = _parse_tree(
+                node,
+                module_name=module_name,
+            )
             funcs.extend(subfuncs)
             clses.extend(subclses)
+            imported_objs.extend(subimported_objs)
         elif isinstance(node, _FUNC_DEF):
             funcs.append(
-                Func(name=node.name, line_num=node.lineno, char_offset=node.col_offset),
+                Func(
+                    name=node.name,
+                    full_name=f"{module_name}.{node.name}",
+                    line_num=node.lineno,
+                    char_offset=node.col_offset,
+                ),
             )
         elif isinstance(node, _CLS_DEF):
             has_funcs = any(isinstance(n, _FUNC_DEF) for n in node.body)
             clses.append(
                 Class(
                     name=node.name,
+                    full_name=f"{module_name}.{node.name}",
                     line_num=node.lineno,
                     char_offset=node.col_offset,
                     has_funcs=has_funcs,
                 ),
             )
+        elif isinstance(node, _IMPORT):
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    imported_objs.append(alias.name)
+            elif isinstance(node, ast.ImportFrom):
+                for alias in node.names:
+                    imported_objs.append(f"{node.module}.{alias.name}")
+            else:
+                raise AssertionError  # noqa: TRY004
+
         elif isinstance(node, _STMT + _TYPING):
             pass
         elif isinstance(node, _EXPR):
@@ -104,4 +129,4 @@ def _get_funcs_clses_from_tree(
             assert not isinstance(node, _FLOW_CTRL)
             raise NotImplementedError(msg)
 
-    return funcs, clses
+    return funcs, clses, imported_objs

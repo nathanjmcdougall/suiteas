@@ -21,6 +21,16 @@ def get_codebase(
 
     if included_src_files is None:
         included_src_files = list(src_dir.glob("**/*.py"))
-    files = [get_file(path) for path in sorted(included_src_files)]
+    files = [
+        get_file(
+            path,
+            module_name=_get_module_name(path=path, root_dir=src_dir),
+        )
+        for path in sorted(included_src_files)
+    ]
 
     return Codebase(files=files)
+
+
+def _get_module_name(*, path: Path, root_dir: Path) -> str:
+    return path.relative_to(root_dir).with_suffix("").as_posix().replace("/", ".")

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from suiteas.config import ProjConfig
 from suiteas.domain import PytestSuite
+from suiteas.read.codebase import _get_module_name
 from suiteas.read.pytest_file import get_pytest_file
 
 
@@ -22,6 +23,12 @@ def get_pytest_suite(
 
     if included_pytest_files is None:
         included_pytest_files = list(unit_dir.glob("**/*.py"))
-    pytest_files = [get_pytest_file(path) for path in sorted(included_pytest_files)]
+    pytest_files = [
+        get_pytest_file(
+            path,
+            module_name=_get_module_name(path=path, root_dir=unit_dir),
+        )
+        for path in sorted(included_pytest_files)
+    ]
 
     return PytestSuite(pytest_files=pytest_files)
