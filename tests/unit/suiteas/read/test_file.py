@@ -3,8 +3,8 @@ from pathlib import Path
 import pytest
 from pysource_codegen._codegen import generate
 
-from suiteas.core.read.file import AnalyzedFileSyntaxError, get_file
 from suiteas.domain import Class, File, Func
+from suiteas.read.file import AnalyzedFileSyntaxError, get_file
 from suiteas_test.config import FAST_TESTS
 
 

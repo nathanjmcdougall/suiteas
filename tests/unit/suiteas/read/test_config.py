@@ -3,14 +3,14 @@ from pathlib import Path
 
 import pytest
 
-from suiteas.core.read.config import (
+from suiteas.domain import ProjConfig
+from suiteas.read.config import (
     ConfigFileError,
     EmptyConfigFileError,
     TOMLProjConfig,
     get_config,
     get_toml_config,
 )
-from suiteas.domain import ProjConfig
 
 
 class TestGetConfig:

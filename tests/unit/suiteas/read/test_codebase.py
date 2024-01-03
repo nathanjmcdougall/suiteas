@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from suiteas.core.read.codebase import get_codebase
 from suiteas.domain import Class, Codebase, File, Func, ProjConfig
+from suiteas.read.codebase import get_codebase
 
 
 class TestGetCodebase:

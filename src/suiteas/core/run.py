@@ -4,36 +4,66 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
-from suiteas.core.read.project import get_project
-from suiteas.core.validate import is_valid_test_suite
+from suiteas.core.check import Violation, get_violations
+from suiteas.read.project import get_project
 
-
-class InvalidTestSuiteError(Exception):
-    """An invalid test suite was found."""
+MAX_PROJ_DIR_DEPTH = 1000
+PYPROJTOML_NAME = "pyproject.toml"
 
 
 def run_suiteas_main(argv: Sequence[str]) -> None:
     """Run the suiteas command line interface without a system exit."""
-    if len(argv) == 0:
-        proj_dir = "."
-    else:
-        proj_dir, *_ = argv
+    included_files = [Path(arg) for arg in argv]
 
-    proj_dir = Path(proj_dir).resolve()
-    project = get_project(proj_dir)
+    proj_dir = _infer_proj_dir()
+    project = get_project(proj_dir=proj_dir, included_files=included_files)
 
-    if not is_valid_test_suite(project):
-        msg = f"Invalid test suite found in {proj_dir}"
-        raise InvalidTestSuiteError(msg)
+    violations = get_violations(project)
+    if violations:
+        print_violations(violations)
+        sys.exit(1)
 
 
 def run_suiteas(argv: Sequence[str] | None = None) -> None:
     """Run the suiteas command line interface."""
-
     if argv is None:
         argv = []
 
     try:
         run_suiteas_main(argv)
-    except (KeyboardInterrupt, InvalidTestSuiteError):
+    except KeyboardInterrupt:
         sys.exit(1)
+
+
+INFER_PROJ_DIR_FAIL_MSG = "Could not infer the project directory for the project."
+
+
+def _infer_proj_dir() -> Path:
+    candidate_dir = Path.cwd().resolve()
+    for _ in range(MAX_PROJ_DIR_DEPTH):
+        if (candidate_dir / PYPROJTOML_NAME).is_file():
+            return candidate_dir
+
+        if (
+            (candidate_dir / ".git").is_dir()
+            or (candidate_dir / ".hg").is_dir()
+            or (candidate_dir / ".svn").is_dir()
+        ):
+            return candidate_dir
+
+        if candidate_dir.parent == candidate_dir:
+            raise ValueError(INFER_PROJ_DIR_FAIL_MSG)
+
+        candidate_dir = candidate_dir.parent
+
+    raise ValueError(INFER_PROJ_DIR_FAIL_MSG)
+
+
+def print_violations(violations: list[Violation]) -> None:
+    """Print a list of violations."""
+    for violation in violations:
+        msg = (
+            f"{violation.rel_path}:{violation.line_num}:{violation.char_offset}: "
+            f"SUI{violation.viol_cat.suiteas_code:03d} {violation.viol_cat.description}"
+        )
+        print(msg, file=sys.stderr)  # noqa: T201

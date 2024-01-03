@@ -3,8 +3,8 @@
 from pathlib import Path
 
 from suiteas.core.pytest import TEST_CLASS_PREFIX
-from suiteas.core.read.file import get_file
 from suiteas.domain import Class, PytestClass, PytestFile
+from suiteas.read.file import get_file
 
 
 def get_pytest_file(path: Path) -> PytestFile:

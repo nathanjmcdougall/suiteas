@@ -38,6 +38,9 @@ keywords = [
 "Source Code" = "https://github.com/nathanjmcdougall/suiteas"
 "Bug Tracker" = "https://github.com/nathanjmcdougall/suiteas/issues"
 
+[project.scripts]
+suiteas = "suiteas:run_suiteas"
+
 [build-system]
 requires = ["setuptools", "setuptools_scm[toml]"]
 build-backend = "setuptools.build_meta"
@@ -102,6 +105,7 @@ ignore = [
     "ANN102", # This is controversial, `cls` doesn't need a verbose type annotation.
     "ANN401", # This is too strict for dunder methods.
     "PTH201", # This is controversial, when dealing with relative paths "." is clearer.
+    "PERF401",# This can hurt readability; the performance is not always worth it.
 ]
 line-length = 88
 target-version = "py311"
@@ -125,6 +129,8 @@ extend-exclude = [
     "D100", # Module docstrings are not necessary for tests.
 ]
 
-
 [tool.ruff.pydocstyle]
 convention = "google"
+
+[tool.suiteas]
+pkg_names=["suiteas"]

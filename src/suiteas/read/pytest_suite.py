@@ -3,11 +3,16 @@
 from pathlib import Path
 
 from suiteas.config import ProjConfig
-from suiteas.core.read.pytest_file import get_pytest_file
 from suiteas.domain import PytestSuite
+from suiteas.read.pytest_file import get_pytest_file
 
 
-def get_pytest_suite(proj_dir: Path, config: ProjConfig) -> PytestSuite:
+def get_pytest_suite(
+    *,
+    proj_dir: Path,
+    config: ProjConfig,
+    included_pytest_files: list[Path] | None,
+) -> PytestSuite:
     """Read the pytest unit test suite for a project."""
     unit_dir = proj_dir / config.tests_rel_path / config.unittest_dir_name
 
@@ -15,6 +20,8 @@ def get_pytest_suite(proj_dir: Path, config: ProjConfig) -> PytestSuite:
         msg = f"Could not find {unit_dir}"
         raise FileNotFoundError(msg)
 
-    pytest_files = [get_pytest_file(path) for path in unit_dir.glob("**/*.py")]
+    if included_pytest_files is None:
+        included_pytest_files = list(unit_dir.glob("**/*.py"))
+    pytest_files = [get_pytest_file(path) for path in sorted(included_pytest_files)]
 
     return PytestSuite(pytest_files=pytest_files)

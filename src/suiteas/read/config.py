@@ -18,6 +18,10 @@ class EmptyConfigFileError(ConfigFileError):
     """An empty configuration file was found."""
 
 
+class MissingConfigSectionError(ConfigFileError):
+    """A configuration file is missing a section."""
+
+
 class TOMLProjConfig(BaseModel):
     """Schema for the TOML configuration file."""
 
@@ -30,12 +34,12 @@ class TOMLProjConfig(BaseModel):
     model_config = dict(extra="forbid")
 
 
-def get_config(proj_dir: Path) -> ProjConfig:
+def get_config(*, proj_dir: Path) -> ProjConfig:
     """Find the configuration for a project in the pyproject.toml file."""
     toml_path = proj_dir / TOML_NAME
     try:
         toml_config = get_toml_config(toml_path)
-    except (FileNotFoundError, EmptyConfigFileError):
+    except (FileNotFoundError, EmptyConfigFileError, MissingConfigSectionError):
         toml_config = TOMLProjConfig()
 
     pkg_names = toml_config.pkg_names
@@ -250,11 +254,11 @@ def get_toml_config(toml_path: Path) -> TOMLProjConfig:
         config_kwargs = config_by_tool["suiteas"]
     except KeyError:
         msg = f"Could not find [tool.suiteas] configuration section at {toml_path}"
-        raise ConfigFileError(msg) from None
+        raise MissingConfigSectionError(msg) from None
 
     if not config_kwargs:
         msg = f"Empty [tool.suiteas] configuration section at {toml_path}"
-        raise ConfigFileError(msg)
+        raise MissingConfigSectionError(msg)
 
     try:
         project_name = parsed_toml["project"]["name"]

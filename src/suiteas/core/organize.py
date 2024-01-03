@@ -19,6 +19,16 @@ def _path_to_test_path(*, path: Path, proj_config: ProjConfig) -> Path:
     return test_path
 
 
+def _test_path_to_path(*, test_path: Path, proj_config: ProjConfig) -> Path:
+    """Convert a test path to a path."""
+    rel_path = test_path.relative_to(
+        proj_config.tests_rel_path / proj_config.unittest_dir_name,
+    )
+    parent_path = proj_config.src_rel_path / rel_path.parent
+    path = parent_path / test_path.name.removeprefix(TEST_FUNC_PREFIX + "_")
+    return path
+
+
 def _func_to_test_class(func: Func) -> PytestClass:
     """Convert a function to a test class."""
     funcname = to_pascal(func.name)

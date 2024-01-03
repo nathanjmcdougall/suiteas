@@ -2,11 +2,16 @@
 from pathlib import Path
 
 from suiteas.config import ProjConfig
-from suiteas.core.read.file import get_file
 from suiteas.domain import Codebase
+from suiteas.read.file import get_file
 
 
-def get_codebase(proj_dir: Path, config: ProjConfig) -> Codebase:
+def get_codebase(
+    *,
+    proj_dir: Path,
+    config: ProjConfig,
+    included_src_files: list[Path] | None,
+) -> Codebase:
     """Read the codebase for a project."""
     src_dir = proj_dir / config.src_rel_path
 
@@ -14,7 +19,8 @@ def get_codebase(proj_dir: Path, config: ProjConfig) -> Codebase:
         msg = f"Could not find {src_dir}"
         raise FileNotFoundError(msg)
 
-    files = [get_file(path) for path in src_dir.glob("**/*.py")]
-    files.sort()
+    if included_src_files is None:
+        included_src_files = list(src_dir.glob("**/*.py"))
+    files = [get_file(path) for path in sorted(included_src_files)]
 
     return Codebase(files=files)
