@@ -11,6 +11,8 @@ class TestableCodeObject(BaseModel):
     """A testable code object."""
 
     name: str
+    line_num: int
+    char_offset: int
 
     @property
     def is_underscored(self) -> bool:

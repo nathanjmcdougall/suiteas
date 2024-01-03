@@ -80,9 +80,17 @@ def _get_funcs_clses_from_tree(
             funcs.extend(subfuncs)
             clses.extend(subclses)
         elif isinstance(node, _FUNC_DEF):
-            funcs.append(Func(name=node.name))
+            funcs.append(
+                Func(name=node.name, line_num=node.lineno, char_offset=node.col_offset),
+            )
         elif isinstance(node, _CLS_DEF):
-            clses.append(Class(name=node.name))
+            clses.append(
+                Class(
+                    name=node.name,
+                    line_num=node.lineno,
+                    char_offset=node.col_offset,
+                ),
+            )
         elif isinstance(node, _STMT + _TYPING):
             pass
         elif isinstance(node, _EXPR):

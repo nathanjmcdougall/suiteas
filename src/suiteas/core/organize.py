@@ -29,12 +29,11 @@ def _test_path_to_path(*, test_path: Path, proj_config: ProjConfig) -> Path:
     return path
 
 
-def _func_to_test_class(func: Func) -> PytestClass:
+def _func_to_pytest_class_name(func: Func) -> str:
     """Convert a function to a test class."""
     funcname = to_pascal(func.name)
     name = f"{TEST_CLASS_PREFIX}{funcname}"
-    pytest_class = PytestClass(name=name)
-    return pytest_class
+    return name
 
 
 def organize_test_suite(project: Project) -> PytestSuite:
@@ -45,7 +44,10 @@ def organize_test_suite(project: Project) -> PytestSuite:
                 path=file.path,
                 proj_config=project.config,
             ),
-            pytest_classes=[_func_to_test_class(func) for func in file.funcs],
+            pytest_classes=[
+                PytestClass(name=_func_to_pytest_class_name(func))
+                for func in file.funcs
+            ],
         )
         for file in project.codebase.files
     ]

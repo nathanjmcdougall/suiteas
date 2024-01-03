@@ -1,0 +1,2 @@
+class TestGetViolations:
+    pass
