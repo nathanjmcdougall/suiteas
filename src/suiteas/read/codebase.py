@@ -10,7 +10,7 @@ def get_codebase(
     *,
     proj_dir: Path,
     config: ProjConfig,
-    included_src_files: list[Path] | None,
+    included_src_files: list[Path] | None = None,
 ) -> Codebase:
     """Read the codebase for a project."""
     src_dir = proj_dir / config.src_rel_path
@@ -33,4 +33,10 @@ def get_codebase(
 
 
 def _get_module_name(*, path: Path, root_dir: Path) -> str:
-    return path.relative_to(root_dir).with_suffix("").as_posix().replace("/", ".")
+    return (
+        path.relative_to(root_dir)
+        .with_suffix("")
+        .as_posix()
+        .replace("/", ".")
+        .replace(".__init__", "")
+    )
