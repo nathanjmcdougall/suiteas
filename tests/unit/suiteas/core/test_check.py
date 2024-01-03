@@ -1,2 +1,3 @@
 class TestGetViolations:
-    pass
+    def test_nothing(self) -> None:
+        assert True

@@ -84,11 +84,13 @@ def _get_funcs_clses_from_tree(
                 Func(name=node.name, line_num=node.lineno, char_offset=node.col_offset),
             )
         elif isinstance(node, _CLS_DEF):
+            has_funcs = any(isinstance(n, _FUNC_DEF) for n in node.body)
             clses.append(
                 Class(
                     name=node.name,
                     line_num=node.lineno,
                     char_offset=node.col_offset,
+                    has_funcs=has_funcs,
                 ),
             )
         elif isinstance(node, _STMT + _TYPING):

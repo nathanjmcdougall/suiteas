@@ -23,6 +23,8 @@ class TestableCodeObject(BaseModel):
 class Class(TestableCodeObject):
     """A Python class."""
 
+    has_funcs: bool
+
 
 class Func(TestableCodeObject):
     """A Python function."""
@@ -46,6 +48,7 @@ class PytestClass(BaseModel):
     """A Pytest test class."""
 
     name: str
+    has_funcs: bool
 
 
 class PytestFile(BaseModel):

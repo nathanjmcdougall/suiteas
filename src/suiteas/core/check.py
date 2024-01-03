@@ -5,7 +5,7 @@ from pydantic.alias_generators import to_snake
 
 from suiteas.core.path import path_to_test_path
 from suiteas.core.pytest import TEST_CLASS_PREFIX
-from suiteas.core.violations import Violation, missing_test_func
+from suiteas.core.violations import Violation, empty_pytest_class, missing_test_func
 from suiteas.domain import Func, Project, PytestFile
 
 
@@ -45,6 +45,18 @@ def get_violations(project: Project) -> list[Violation]:
                             func=func.name,
                             pytest_file_rel_posix=test_rel_path.as_posix(),
                         ),
+                    ),
+                )
+
+    # Check SUI002: empty-pytest-class
+    for pytest_file in project.pytest_suite.pytest_files:
+        for pytest_class in pytest_file.pytest_classes:
+            if not pytest_class.has_funcs:
+                violations.append(
+                    Violation(
+                        viol_cat=empty_pytest_class,
+                        rel_path=pytest_file.path.relative_to(project.proj_dir),
+                        fmt_info=dict(pytest_class_name=pytest_class.name),
                     ),
                 )
 

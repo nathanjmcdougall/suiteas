@@ -29,3 +29,9 @@ missing_test_func = ViolationCategory(
     name="missing-test-func",
     description="{func} untested in {pytest_file_rel_posix}",
 )
+
+empty_pytest_class = ViolationCategory(
+    suiteas_code=2,
+    name="empty-pytest-class",
+    description="{pytest_class_name} has no tests",
+)

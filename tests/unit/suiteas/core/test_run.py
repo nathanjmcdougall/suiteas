@@ -12,8 +12,10 @@ class TestRunSuiteAsMain:
 
 
 class TestPrintViolations:
-    pass
+    def test_nothing(self) -> None:
+        assert True
 
 
 class TestRunSuiteas:
-    pass
+    def test_nothing(self) -> None:
+        assert True

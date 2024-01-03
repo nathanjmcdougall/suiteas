@@ -11,7 +11,9 @@ def get_pytest_file(path: Path) -> PytestFile:
     """Read a pytest test file."""
     file = get_file(path)
     pytest_classes = [
-        PytestClass(name=cls.name) for cls in file.clses if _is_pytest_class(cls)
+        PytestClass(name=cls.name, has_funcs=cls.has_funcs)
+        for cls in file.clses
+        if _is_pytest_class(cls)
     ]
     return PytestFile(path=file.path, pytest_classes=pytest_classes)
 

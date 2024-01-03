@@ -54,10 +54,12 @@ def get_project(*, proj_dir: Path, included_files: list[Path]) -> Project:
             proj_dir / path_to_test_path(path, proj_config=config, proj_dir=proj_dir)
             for path in included_src_files
         ]
-        included_src_files = [path for path in included_src_files if path.exists()]
-        included_pytest_files = [
-            path for path in included_pytest_files if path.exists()
-        ]
+        included_src_files = list(
+            {path for path in included_src_files if path.exists()},
+        )
+        included_pytest_files = list(
+            {path for path in included_pytest_files if path.exists()},
+        )
     else:
         included_src_files = None
         included_pytest_files = None

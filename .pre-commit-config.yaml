@@ -58,3 +58,4 @@ repos:
         entry: python -m suiteas_hook
         language: system
         types: [python]
+        require_serial: true
