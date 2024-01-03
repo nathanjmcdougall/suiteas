@@ -16,6 +16,6 @@ class TestPrintViolations:
         assert True
 
 
-class TestRunSuiteas:
+class TestRunSuiteAs:
     def test_nothing(self) -> None:
         assert True
