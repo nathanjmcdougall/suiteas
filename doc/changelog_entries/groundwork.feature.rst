@@ -1,0 +1,1 @@
+Basic checking functionality has been implemented, comprising three rules.
