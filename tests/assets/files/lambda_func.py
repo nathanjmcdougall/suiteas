@@ -1,0 +1,1 @@
+goodbye = lambda: print("Goodbye!")

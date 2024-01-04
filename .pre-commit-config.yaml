@@ -32,7 +32,12 @@ repos:
     rev: v0.1.6
     hooks:
       - id: detect-missing-init
-        args: ["--create", "--python-folders", "src/suiteas,tests"]
+        args:
+          [
+            "--create",
+            "--python-folders",
+            "src/suiteas,src/suiteas_test,tests/unit,tests/integr",
+          ]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
@@ -41,7 +46,18 @@ repos:
         args: [--assume-in-merge]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.5
+    rev: v0.1.9
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
+
+  - repo: local
+    hooks:
+      - id: suiteas
+        name: suiteas
+        entry: python -m suiteas_hook
+        language: python
+        types: [python]
+        require_serial: true
+        additional_dependencies:
+          - "pydantic>=2.4.2" # Sync with pyproject.toml

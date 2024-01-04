@@ -1,8 +1,3 @@
-"""The suiteas package."""
+from suiteas.core.run import run_suiteas
 
-def hello() -> None:
-    """Return a greeting.
-
-    This is a placeholder function until the package has content.
-    """
-    return "Hello from suiteas!"
+__all__ = ["run_suiteas"]

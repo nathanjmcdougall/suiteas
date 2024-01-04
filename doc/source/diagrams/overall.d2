@@ -1,30 +1,33 @@
 ...@config
 
-Python Code: {class: codebase}
-Unit Test Suite: {class: codebase}
+Project: {
+  class: main_block
+  Main Codebase: {class: codebase}
+  Test Suite: {class: codebase}
+}
+
+Project.Test Suite -> SuiteAs.Validate Suite Structure
+Project.Test Suite -> SuiteAs.Enforce Suite Structure
 
 Developer: {class: person}
-SuiteAs: {class: package}
+Developer -> SuiteAs.Validate Suite Structure
+Developer -> SuiteAs.Enforce Suite Structure
 
-Write New Python Code: {class: process}
-Update Python Code: {class: process}
-Update Unit Test Suite: {class: process}
-Organize Test Suite: {class: process}
+SuiteAs: {
+  class: main_block
+  Find New Suite Structure: {class: process}
+  Validate Suite Structure: {class: process}
+  Enforce Suite Structure: {class: process}
+  New Suite Structure: {class: codebase}
 
-Python Code -> Organize Test Suite
-Python Code -> Update Python Code
-Unit Test Suite -> Organize Test Suite
-Unit Test Suite -> Update Unit Test Suite
+  Find New Suite Structure -> New Suite Structure
+  New Suite Structure -> Validate Suite Structure
+  New Suite Structure -> Enforce Suite Structure
+}
 
-Developer -> Write New Python Code
-Developer -> Update Python Code
-Developer -> Update Unit Test Suite
-SuiteAs -> Organize Test Suite
+Pass/Fail: {class: stop}
 
-Write New Python Code -> Python Code
-Write New Python Code -> Organize Test Suite: {class: triggers}
-Update Python Code -> Python Code
-Update Python Code -> Organize Test Suite: {class: triggers}
-Update Unit Test Suite -> Unit Test Suite
-Update Unit Test Suite -> Organize Test Suite: {class: triggers}
-Organize Test Suite -> Unit Test Suite
+Project -> SuiteAs.Find New Suite Structure
+
+SuiteAs.Validate Suite Structure -> Pass/Fail
+SuiteAs.Enforce Suite Structure -> Project.Test Suite
