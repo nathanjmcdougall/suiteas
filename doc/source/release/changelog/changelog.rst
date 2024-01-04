@@ -1,3 +1,12 @@
+0.2.0 (2024-01-04)
+==================
+
+Features
+--------
+
+- Basic checking functionality has been implemented, comprising three rules. (https://github.com/nathanjmcdougall/suiteas/issues/30)
+
+
 0.1.0 (2023-11-05)
 ==================
 
