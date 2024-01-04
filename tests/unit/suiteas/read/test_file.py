@@ -9,11 +9,9 @@ from suiteas_test.config import FAST_TESTS
 
 
 class TestGetFile:
-    def test_nonexistent(self, root_dir: Path) -> None:
-        file_path = root_dir / "fake_mcfake_face.py"
-
+    def test_nonexistent(self, tmp_path: Path) -> None:
         with pytest.raises(FileNotFoundError):
-            get_file(file_path)
+            get_file(path=tmp_path / "face.py", module_name="fakey.mcfake.face")
 
     def test_empty(self, files_parent_dir: Path) -> None:
         file_path = files_parent_dir / "empty.py"

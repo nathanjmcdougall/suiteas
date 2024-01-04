@@ -19,55 +19,63 @@ class TestGetConfig:
             ConfigFileError,
             match=".*Could not automatically determine source directory.*",
         ):
-            get_config(projs_parent_dir / "nonexistent")
+            get_config(proj_dir=projs_parent_dir / "nonexistent")
 
     def test_empty_config(self, projs_parent_dir: Path) -> None:
         with pytest.raises(
             ConfigFileError,
             match=".*Could not automatically determine source directory.*",
         ):
-            get_config(projs_parent_dir / "empty_config")
+            get_config(proj_dir=projs_parent_dir / "empty_config")
 
     def test_autosrc(self, projs_parent_dir: Path) -> None:
         """Test we can automatically find the source folder at src."""
-        assert get_config(projs_parent_dir / "autosrc") == ProjConfig(pkg_names=[])
+        assert get_config(proj_dir=projs_parent_dir / "autosrc") == ProjConfig(
+            pkg_names=[],
+        )
 
     def test_autopkgnamesrc(self, projs_parent_dir: Path) -> None:
         """Test we can automatically find the source folder at pkg name."""
-        assert get_config(projs_parent_dir / "autopkgnamesrc") == ProjConfig(
+        assert get_config(proj_dir=projs_parent_dir / "autopkgnamesrc") == ProjConfig(
             pkg_names=["ixvm0b6u"],
             src_rel_path=".",
         )
 
     def test_autoprojnamesrc(self, projs_parent_dir: Path) -> None:
         """Test we can determine the source folder is the name of the project."""
-        assert get_config(projs_parent_dir / "autoprojnamesrc") == ProjConfig(
+        assert get_config(proj_dir=projs_parent_dir / "autoprojnamesrc") == ProjConfig(
             pkg_names=["pr4a7g7m"],
             src_rel_path=".",
         )
 
     def test_autosetuptoolssrc(self, projs_parent_dir: Path) -> None:
         """Test we can determine the source folder is the name setuptools pkg."""
-        assert get_config(projs_parent_dir / "autosetuptoolssrc") == ProjConfig(
+        assert get_config(
+            proj_dir=projs_parent_dir / "autosetuptoolssrc",
+        ) == ProjConfig(
             pkg_names=["euul5ld4"],
             src_rel_path=".",
         )
 
     def test_automultipkgnamesrc(self, projs_parent_dir: Path) -> None:
-        assert get_config(projs_parent_dir / "automultipkgnamesrc") == ProjConfig(
+        assert get_config(
+            proj_dir=projs_parent_dir / "automultipkgnamesrc",
+        ) == ProjConfig(
             pkg_names=["g5qyyvdv", "zhd1kcvi"],
             src_rel_path=".",
         )
 
     def test_automultisetuptoolssrc(self, projs_parent_dir: Path) -> None:
-        assert get_config(projs_parent_dir / "automultisetuptoolssrc") == ProjConfig(
+        assert get_config(
+            proj_dir=projs_parent_dir / "automultisetuptoolssrc",
+        ) == ProjConfig(
             pkg_names=["lh0fehzp", "z00rc6ru"],
             src_rel_path=".",
         )
 
     def test_autoall(self, projs_parent_dir: Path) -> None:
         """Test we can automatically determine everything without pyproject.toml."""
-        assert get_config(projs_parent_dir / "autoall") == ProjConfig(
+        assert get_config(proj_dir=projs_parent_dir / "autoall") == ProjConfig(
             pkg_names=["p8eovx9k"],
             src_rel_path=Path("src"),
             tests_rel_path=Path("tests"),
@@ -79,10 +87,10 @@ class TestGetConfig:
             ConfigFileError,
             match=".*Could not automatically determine package names.*",
         ):
-            get_config(projs_parent_dir / "srcconfig_only")
+            get_config(proj_dir=projs_parent_dir / "srcconfig_only")
 
     def test_unitrootdir(self, projs_parent_dir: Path) -> None:
-        assert get_config(projs_parent_dir / "unitrootdir") == ProjConfig(
+        assert get_config(proj_dir=projs_parent_dir / "unitrootdir") == ProjConfig(
             pkg_names=["wm96nwsm"],
             src_rel_path=Path("src"),
             tests_rel_path=Path("tests"),

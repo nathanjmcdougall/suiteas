@@ -39,8 +39,10 @@ def get_config(*, proj_dir: Path) -> ProjConfig:
     toml_path = proj_dir / TOML_NAME
     try:
         toml_config = get_toml_config(toml_path)
+        found_toml = True
     except (FileNotFoundError, EmptyConfigFileError, MissingConfigSectionError):
         toml_config = TOMLProjConfig()
+        found_toml = False
 
     pkg_names = toml_config.pkg_names
     src_rel_path = toml_config.src_rel_path
@@ -51,7 +53,11 @@ def get_config(*, proj_dir: Path) -> ProjConfig:
         pkg_names = _heuristic1_pkg_names(toml_config=toml_config)
 
     if src_rel_path is None:
-        src_rel_path = _heuristic_src_rel_path(proj_dir=proj_dir, pkg_names=pkg_names)
+        src_rel_path = _heuristic_src_rel_path(
+            proj_dir=proj_dir,
+            pkg_names=pkg_names,
+            found_toml=found_toml,
+        )
     _validate_src_rel_path(src_rel_path, proj_dir=proj_dir)
 
     src_dir = proj_dir / src_rel_path
@@ -97,7 +103,12 @@ def get_config(*, proj_dir: Path) -> ProjConfig:
     )
 
 
-def _heuristic_src_rel_path(*, proj_dir: Path, pkg_names: list[str] | None) -> Path:
+def _heuristic_src_rel_path(
+    *,
+    proj_dir: Path,
+    pkg_names: list[str] | None,
+    found_toml: bool,
+) -> Path:
     if (proj_dir / "src").exists():
         return Path("src")
 
@@ -107,13 +118,22 @@ def _heuristic_src_rel_path(*, proj_dir: Path, pkg_names: list[str] | None) -> P
                 break
             return Path(".")
 
+    if found_toml:
+        msg = (
+            "Could not automatically determine source directory for the project. "
+            "Please manually configure this in pyproject.toml as follows:\n"
+            "[tool.suiteas]\n"
+            'src_rel_path = "???"'
+        )
+        raise ConfigFileError(msg)
+
     msg = (
-        "Could not automatically determine source directory for project. "
-        "Please manually configure this in pyproject.toml as follows:\n"
+        "Could not find configuration file nor determine the source directory for the "
+        "project. Please manually configure this in pyproject.toml as follows:\n"
         "[tool.suiteas]\n"
         'src_rel_path = "???"'
     )
-    raise ConfigFileError(msg)
+    raise FileNotFoundError(msg)
 
 
 def _heuristic1_pkg_names(*, toml_config: TOMLProjConfig) -> list[str] | None:

@@ -11,8 +11,11 @@ from suiteas.read.pytest_suite import get_pytest_suite
 TOML_NAME = "pyproject.toml"
 
 
-def get_project(*, proj_dir: Path, included_files: list[Path]) -> Project:
+def get_project(*, proj_dir: Path, included_files: list[Path] | None = None) -> Project:
     """Get a project from a directory."""
+    if included_files is None:
+        included_files = []
+
     config = get_config(proj_dir=proj_dir)
 
     included_files = [path.resolve() for path in included_files]

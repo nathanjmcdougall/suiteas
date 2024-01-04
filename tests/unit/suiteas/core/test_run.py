@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import pytest
@@ -7,8 +8,11 @@ from suiteas.core.run import print_violations, run_suiteas, run_suiteas_main
 
 class TestRunSuiteAsMain:
     def test_no_tests_dir(self, projs_parent_dir: Path) -> None:
+        old_cwd = Path.cwd()
+        os.chdir(projs_parent_dir / "no_tests_dir")
         with pytest.raises(FileNotFoundError):
-            run_suiteas_main([(projs_parent_dir / "no_tests_dir").as_posix()])
+            run_suiteas_main([])
+        os.chdir(old_cwd)
 
 
 class TestPrintViolations:
