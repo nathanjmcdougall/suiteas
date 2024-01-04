@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from suiteas.core.pytest import TEST_CLASS_PREFIX
+from suiteas.core.names import PYTEST_CLASS_PREFIX
 from suiteas.domain import Class, PytestClass, PytestFile
 from suiteas.read.file import get_file
 
@@ -27,4 +27,4 @@ def get_pytest_file(path: Path, *, module_name: str) -> PytestFile:
 
 def _is_pytest_class(cls: Class) -> bool:
     """Check if a class is a pytest class."""
-    return cls.name.startswith(TEST_CLASS_PREFIX)
+    return cls.name.startswith(PYTEST_CLASS_PREFIX)

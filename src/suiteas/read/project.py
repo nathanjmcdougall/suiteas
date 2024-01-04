@@ -8,8 +8,6 @@ from suiteas.read.codebase import get_codebase
 from suiteas.read.config import get_config
 from suiteas.read.pytest_suite import get_pytest_suite
 
-TOML_NAME = "pyproject.toml"
-
 
 def get_project(*, proj_dir: Path, included_files: list[Path] | None = None) -> Project:
     """Get a project from a directory."""

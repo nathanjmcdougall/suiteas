@@ -6,8 +6,7 @@ from typing import Any
 from pydantic import BaseModel, ValidationError
 
 from suiteas.config import ProjConfig
-
-TOML_NAME = "pyproject.toml"
+from suiteas.core.names import PYPROJTOML_NAME
 
 
 class ConfigFileError(ValueError):
@@ -36,13 +35,16 @@ class TOMLProjConfig(BaseModel):
 
 def get_config(*, proj_dir: Path) -> ProjConfig:
     """Find the configuration for a project in the pyproject.toml file."""
-    toml_path = proj_dir / TOML_NAME
+    toml_path = proj_dir / PYPROJTOML_NAME
     try:
         toml_config = get_toml_config(toml_path)
         found_toml = True
-    except (FileNotFoundError, EmptyConfigFileError, MissingConfigSectionError):
+    except FileNotFoundError:
         toml_config = TOMLProjConfig()
         found_toml = False
+    except (EmptyConfigFileError, MissingConfigSectionError):
+        toml_config = TOMLProjConfig()
+        found_toml = True
 
     pkg_names = toml_config.pkg_names
     src_rel_path = toml_config.src_rel_path

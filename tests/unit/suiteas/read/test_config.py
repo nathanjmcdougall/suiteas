@@ -16,8 +16,8 @@ from suiteas.read.config import (
 class TestGetConfig:
     def test_nonexistent(self, projs_parent_dir: Path) -> None:
         with pytest.raises(
-            ConfigFileError,
-            match=".*Could not automatically determine source directory.*",
+            FileNotFoundError,
+            match=".*Could not find configuration file nor determine the source.*",
         ):
             get_config(proj_dir=projs_parent_dir / "nonexistent")
 

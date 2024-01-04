@@ -5,10 +5,10 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from suiteas.core.check import Violation, get_violations
+from suiteas.core.names import PYPROJTOML_NAME
 from suiteas.read.project import get_project
 
 MAX_PROJ_DIR_DEPTH = 1000
-PYPROJTOML_NAME = "pyproject.toml"
 
 
 def run_suiteas_main(argv: Sequence[str]) -> None:

@@ -2,7 +2,7 @@
 from pathlib import Path
 
 from suiteas.config import ProjConfig
-from suiteas.core.pytest import TEST_FILE_PREFIX
+from suiteas.core.names import PYTEST_FILE_PREFIX
 
 
 def path_to_pytest_path(path: Path, *, proj_config: ProjConfig, proj_dir: Path) -> Path:
@@ -11,7 +11,7 @@ def path_to_pytest_path(path: Path, *, proj_config: ProjConfig, proj_dir: Path) 
     test_parent_path = (
         proj_config.tests_rel_path / proj_config.unittest_dir_name / rel_path.parent
     )
-    test_path = test_parent_path / f"{TEST_FILE_PREFIX}{path.stem}.py"
+    test_path = test_parent_path / f"{PYTEST_FILE_PREFIX}{path.stem}.py"
     return test_path
 
 
@@ -26,5 +26,5 @@ def pytest_path_to_path(
         proj_dir / proj_config.tests_rel_path / proj_config.unittest_dir_name,
     )
     parent_path = proj_config.src_rel_path / rel_path.parent
-    path = parent_path / rel_path.name.removeprefix(TEST_FILE_PREFIX)
+    path = parent_path / rel_path.name.removeprefix(PYTEST_FILE_PREFIX)
     return path

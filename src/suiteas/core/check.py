@@ -3,8 +3,8 @@
 
 from pydantic.alias_generators import to_snake
 
+from suiteas.core.names import PYTEST_CLASS_PREFIX
 from suiteas.core.path import path_to_pytest_path
-from suiteas.core.pytest import TEST_CLASS_PREFIX
 from suiteas.core.violations import (
     Violation,
     empty_pytest_class,
@@ -100,7 +100,7 @@ def _pytest_file_has_func_tests(
         if to_snake(pytest_class.name).replace(
             "_",
             "",
-        ) == to_snake(TEST_CLASS_PREFIX) + func.name.replace("_", ""):
+        ) == to_snake(PYTEST_CLASS_PREFIX) + func.name.replace("_", ""):
             return True
     return False
 
