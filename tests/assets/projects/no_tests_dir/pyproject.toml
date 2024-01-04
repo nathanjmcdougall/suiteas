@@ -1,0 +1,3 @@
+[tool.suiteas]
+pkg_names = ["t82sedcy"]
+tests_rel_path = "tests"

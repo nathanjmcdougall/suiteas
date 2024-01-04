@@ -5,9 +5,9 @@ description = "An opinionated testing suite organizer for pytest"
 authors = [
     { name = "Nathan McDougall", email = "nathan.j.mcdougall@gmail.com" },
 ]
-dependencies = []
+dependencies = ["pydantic>=2.4.2"]  # Sync with .pre-commit-config.yaml
 readme = "README.md"
-requires-python = ">= 3.11"
+requires-python = ">= 3.11" # Sync with ruff target-version
 license = { text = "MIT" }
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
@@ -38,6 +38,9 @@ keywords = [
 "Source Code" = "https://github.com/nathanjmcdougall/suiteas"
 "Bug Tracker" = "https://github.com/nathanjmcdougall/suiteas/issues"
 
+[project.scripts]
+suiteas = "suiteas:run_suiteas"
+
 [build-system]
 requires = ["setuptools", "setuptools_scm[toml]"]
 build-backend = "setuptools.build_meta"
@@ -62,6 +65,11 @@ dev-dependencies = [
     "pre-commit>=3.5.0",
     "setuptools>=68.2.2",
     "setuptools_scm[toml]>=8.0.4",
+    "pytest>=7.4.3",
+    "typing-extensions>=4.8.0",
+    "ruff==0.1.9",
+    "pysource-codegen>=0.5.0",
+    "python-dotenv>=1.0.0",
 ]
 
 [tool.hatch.metadata]
@@ -78,3 +86,51 @@ issue_format = "https://github.com/nathanjmcdougall/suiteas/issues/{issue}"
 directory = "feature"
 name = "Features"
 showcontent = true
+
+[tool.ruff]
+src = ["src"]
+select = ["ALL"]
+ignore = [
+    "S101",   # Use of assert is controversial but in any case is useful with pytest
+    "D202",   # This is controversial, it is useful to have a blank line after a docstring
+    "D203",   # This is controversial, no need to have a blank line before a docstring
+    "D213",   # This conflicts with D212 and violates PEP 257
+    "D406",   # This rule is for non-Google style docstrings
+    "D407",   # This rule is for non-Google style docstrings
+    "D408",   # This rule is for non-Google style docstrings
+    "D409",   # This rule is for non-Google style docstrings
+    "RET504", # This is controversial, named returns are often clearer.
+    "C408",   # This is controversial, calls to `dict` can be more idiomatic than {}.
+    "ANN101", # This is controversial, `self` doesn't need a verbose type annotation.
+    "ANN102", # This is controversial, `cls` doesn't need a verbose type annotation.
+    "ANN401", # This is too strict for dunder methods.
+    "PTH201", # This is controversial, when dealing with relative paths "." is clearer.
+    "PERF401",# This can hurt readability; the performance is not always worth it.
+]
+line-length = 88
+target-version = "py311"
+extend-exclude = [
+    "tests/assets/**",
+]
+
+[tool.ruff.extend-per-file-ignores]
+"src/suiteas/**/__init__.py" = [
+    "D104", # __init__.py files do not need a docstring necessarily.
+]
+"src/suiteas_test/**/__init__.py" = [
+    "D104", # __init__.py files do not need a docstring necessarily.
+]
+"tests/**/__init__.py" = [
+    "D104", # __init__.py files do not need a docstring necessarily.
+]
+"tests/**/*.py" = [
+    "D101", # Class docstrings are not necessary for tests.
+    "D102", # Method docstrings are not necessary for tests.
+    "D100", # Module docstrings are not necessary for tests.
+]
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.suiteas]
+pkg_names=["suiteas"]

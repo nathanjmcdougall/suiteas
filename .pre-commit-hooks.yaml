@@ -1,0 +1,6 @@
+- id: suiteas
+  name: suiteas
+  entry: suiteas
+  language: python
+  types: [python]
+  require_serial: true

@@ -1,0 +1,9 @@
+[project]
+name = "example"
+version = "0.1.0"
+description = "Example"
+
+[tool.suiteas]
+pkg_names=["fake", "example"]
+
+[tool.suiteas.mysubsection]
