@@ -5,7 +5,7 @@ from suiteas.config import ProjConfig
 from suiteas.core.pytest import TEST_FILE_PREFIX
 
 
-def path_to_test_path(path: Path, *, proj_config: ProjConfig, proj_dir: Path) -> Path:
+def path_to_pytest_path(path: Path, *, proj_config: ProjConfig, proj_dir: Path) -> Path:
     """Convert a path to a test path."""
     rel_path = path.relative_to(proj_dir / proj_config.src_rel_path)
     test_parent_path = (
@@ -15,7 +15,7 @@ def path_to_test_path(path: Path, *, proj_config: ProjConfig, proj_dir: Path) ->
     return test_path
 
 
-def test_path_to_path(
+def pytest_path_to_path(
     test_path: Path,
     *,
     proj_config: ProjConfig,

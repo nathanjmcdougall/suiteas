@@ -3,7 +3,7 @@
 
 from pydantic.alias_generators import to_snake
 
-from suiteas.core.path import path_to_test_path
+from suiteas.core.path import path_to_pytest_path
 from suiteas.core.pytest import TEST_CLASS_PREFIX
 from suiteas.core.violations import (
     Violation,
@@ -28,7 +28,7 @@ def get_violations(project: Project) -> list[Violation]:
         if not file.funcs:
             continue
 
-        test_rel_path = path_to_test_path(
+        test_rel_path = path_to_pytest_path(
             path=file.path,
             proj_config=project.config,
             proj_dir=project.proj_dir,
