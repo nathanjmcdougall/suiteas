@@ -5,7 +5,7 @@ description = "An opinionated testing suite organizer for pytest"
 authors = [
     { name = "Nathan McDougall", email = "nathan.j.mcdougall@gmail.com" },
 ]
-dependencies = ["pydantic>=2.4.2"]
+dependencies = ["pydantic>=2.4.2"]  # Sync with .pre-commit-config.yaml
 readme = "README.md"
 requires-python = ">= 3.11" # Sync with ruff target-version
 license = { text = "MIT" }
