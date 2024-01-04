@@ -16,9 +16,7 @@ def get_project(*, proj_dir: Path, included_files: list[Path] | None = None) -> 
 
     config = get_config(proj_dir=proj_dir)
 
-    included_files = [path.resolve() for path in included_files]
-
-    if included_files:
+    if included_files := [path.resolve() for path in included_files]:
         included_src_files = [
             proj_dir / path
             for path in included_files
@@ -76,10 +74,9 @@ def get_project(*, proj_dir: Path, included_files: list[Path] | None = None) -> 
         included_pytest_files=included_pytest_files,
     )
 
-    project = Project(
+    return Project(
         codebase=codebase,
         pytest_suite=pytest_suite,
         config=config,
         proj_dir=proj_dir,
     )
-    return project

@@ -74,16 +74,15 @@ def get_violations(project: Project) -> list[Violation]:
 
     # Check SUI002: empty-pytest-class
     for pytest_file in project.pytest_suite.pytest_files:
-        for pytest_class in pytest_file.pytest_classes:
-            if not pytest_class.has_funcs:
-                violations.append(
-                    Violation(
-                        viol_cat=empty_pytest_class,
-                        rel_path=pytest_file.path.relative_to(project.proj_dir),
-                        fmt_info=dict(pytest_class_name=pytest_class.name),
-                    ),
-                )
-
+        violations.extend(
+            Violation(
+                viol_cat=empty_pytest_class,
+                rel_path=pytest_file.path.relative_to(project.proj_dir),
+                fmt_info=dict(pytest_class_name=pytest_class.name),
+            )
+            for pytest_class in pytest_file.pytest_classes
+            if not pytest_class.has_funcs
+        )
     return violations
 
 
@@ -96,13 +95,14 @@ def _pytest_file_has_func_tests(
     if pytest_file is None:
         return False
 
-    for pytest_class in pytest_file.pytest_classes:
-        if to_snake(pytest_class.name).replace(
+    return any(
+        to_snake(pytest_class.name).replace(
             "_",
             "",
-        ) == to_snake(PYTEST_CLASS_PREFIX) + func.name.replace("_", ""):
-            return True
-    return False
+        )
+        == to_snake(PYTEST_CLASS_PREFIX) + func.name.replace("_", "")
+        for pytest_class in pytest_file.pytest_classes
+    )
 
 
 def _pytest_file_imports_func(

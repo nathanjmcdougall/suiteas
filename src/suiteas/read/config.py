@@ -142,19 +142,15 @@ def _heuristic1_pkg_names(*, toml_config: TOMLProjConfig) -> list[str] | None:
     if toml_config.setuptools_pkg_names is not None:
         return toml_config.setuptools_pkg_names
 
-    if toml_config.project_name is not None:
-        return [toml_config.project_name]
-
-    return None
+    return None if toml_config.project_name is None else [toml_config.project_name]
 
 
 def _heuristic2_pkg_names(*, src_dir: Path) -> list[str]:
-    package_names = [
+    if package_names := [
         path.name
         for path in src_dir.iterdir()
         if path.is_dir() and path.name.isidentifier()
-    ]
-    if package_names:
+    ]:
         return package_names
 
     msg = (
@@ -180,10 +176,7 @@ def _heuristic_tests_rel_path(*, proj_dir: Path) -> Path:
 
 
 def _heuristic1_unittest_dir_name(*, tests_dir: Path) -> Path | None:
-    if (tests_dir / "unit").exists():
-        return Path("unit")
-
-    return None
+    return Path("unit") if (tests_dir / "unit").exists() else None
 
 
 def _heuristic2_unittest_dir_name(*, use_consolidated_tests_dir: bool) -> Path:

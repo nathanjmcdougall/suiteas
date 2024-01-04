@@ -18,8 +18,7 @@ def run_suiteas_main(argv: Sequence[str]) -> None:
     proj_dir = _infer_proj_dir()
     project = get_project(proj_dir=proj_dir, included_files=included_files)
 
-    violations = get_violations(project)
-    if violations:
+    if violations := get_violations(project):
         print_violations(violations)
         sys.exit(1)
 

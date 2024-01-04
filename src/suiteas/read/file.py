@@ -110,11 +110,9 @@ def _parse_tree(  # noqa: PLR0912, C901
             )
         elif isinstance(node, _IMPORT):
             if isinstance(node, ast.Import):
-                for alias in node.names:
-                    imported_objs.append(alias.name)
+                imported_objs.extend(alias.name for alias in node.names)
             elif isinstance(node, ast.ImportFrom):
-                for alias in node.names:
-                    imported_objs.append(f"{node.module}.{alias.name}")
+                imported_objs.extend(f"{node.module}.{alias.name}" for alias in node.names)
             else:
                 raise AssertionError  # noqa: TRY004
 
