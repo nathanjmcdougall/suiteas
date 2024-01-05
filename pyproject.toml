@@ -68,9 +68,12 @@ dev-dependencies = [
     "setuptools_scm[toml]>=8.0.4",
     "pytest>=7.4.3",
     "typing-extensions>=4.8.0",
-    "ruff==0.1.11", # Sync with .pre-commit-config.yaml
+    #
+    "ruff==0.1.11",
+    # ^Sync with .pre-commit-config.yaml
     "pysource-codegen>=0.5.0",
     "python-dotenv>=1.0.0",
+    "pytest-cov>=4.1.0",
 ]
 
 [tool.hatch.metadata]
