@@ -50,6 +50,10 @@ _FLOW_CTRL = (
     ast.TryStar,
 )
 
+# For 3.12+ only
+if hasattr(ast, "TypeAlias"):
+    _TYPING += (ast.TypeAlias,)
+
 
 def get_file(path: Path, *, module_name: str) -> File:
     """Read a file."""
