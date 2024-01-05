@@ -47,12 +47,11 @@ def get_project(*, proj_dir: Path, included_files: list[Path] | None = None) -> 
                 )
             ]
         included_src_files += [
-            proj_dir
-            / pytest_path_to_path(test_path, proj_config=config, proj_dir=proj_dir)
+            pytest_path_to_path(test_path, proj_config=config, proj_dir=proj_dir)
             for test_path in included_pytest_files
         ]
         included_pytest_files += [
-            proj_dir / path_to_pytest_path(path, proj_config=config, proj_dir=proj_dir)
+            path_to_pytest_path(path, proj_config=config, proj_dir=proj_dir)
             for path in included_src_files
         ]
         included_src_files = list(
