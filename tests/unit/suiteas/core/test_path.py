@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from suiteas.core.path import path_to_pytest_path, pytest_path_to_path
 from suiteas.domain import ProjConfig
 
@@ -37,6 +39,16 @@ class TestPytestPathToPath:
             proj_dir=Path("example/subfolder/repo"),
         ) == Path("example/subfolder/repo/src/fakemcfake/submodule/example.py")
 
+    def test_err(self) -> None:
+        with pytest.raises(ValueError, match=".* is not in the subpath of .*"):
+            pytest_path_to_path(
+                Path("example/subfolder/repo/tests/unit/fakemcfake/test_example.py"),
+                proj_config=ProjConfig(
+                    pkg_names=["fakemcfake"],
+                ),
+                proj_dir=Path("example/subfolder/otherrepo"),
+            )
+
 
 class TestPathToPytestPath:
     def test_basic(self) -> None:
@@ -70,3 +82,13 @@ class TestPathToPytestPath:
             ),
             proj_dir=Path("example/subfolder/repo"),
         ) == Path("example/subfolder/repo/tests/submodule/test_example.py")
+
+    def test_err(self) -> None:
+        with pytest.raises(ValueError, match=".* is not in the subpath of .*"):
+            path_to_pytest_path(
+                Path("example/subfolder/repo/src/fakemcfake/example.py"),
+                proj_config=ProjConfig(
+                    pkg_names=["fakemcfake"],
+                ),
+                proj_dir=Path("example/subfolder/otherrepo"),
+            )
