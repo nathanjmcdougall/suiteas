@@ -7,7 +7,7 @@ authors = [
 ]
 dependencies = ["pydantic>=2.4.2"]  # Sync with .pre-commit-config.yaml
 readme = "README.md"
-requires-python = ">= 3.11" # Sync with ruff target-version
+requires-python = ">= 3.11" # Sync with ruff target-version, ci.yml
 license = { text = "MIT" }
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
@@ -18,6 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Testing",
     "Typing :: Typed",
 ]
@@ -134,3 +135,16 @@ convention = "google"
 
 [tool.suiteas]
 pkg_names=["suiteas"]
+
+[tool.coverage.report]
+ignore_errors = true
+show_missing = true
+exclude_lines = [
+  # Don't complain if tests don't hit defensive assertion code:
+  "raise AssertionError",
+  # Don't complain if non-runnable code isn't run:
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+  # Don't complain about abstract methods, they aren't run:
+  "@(abc\\.)?abstractmethod",
+]
