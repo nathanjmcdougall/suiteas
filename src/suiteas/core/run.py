@@ -4,8 +4,9 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
-from suiteas.core.check import Violation, get_violations
+from suiteas.core.check import get_violations
 from suiteas.core.names import PYPROJTOML_NAME
+from suiteas.core.print import print_violations
 from suiteas.read.project import get_project
 
 MAX_PROJ_DIR_DEPTH = 1000
@@ -57,14 +58,3 @@ def _infer_proj_dir() -> Path:
         candidate_dir = candidate_dir.parent
 
     raise ValueError(INFER_PROJ_DIR_FAIL_MSG)
-
-
-def print_violations(violations: list[Violation]) -> None:
-    """Print a list of violations."""
-    for violation in violations:
-        msg = (
-            f"{violation.rel_path}:{violation.line_num}:{violation.char_offset}: "
-            f"SUI{violation.viol_cat.suiteas_code:03d} "
-            f"{violation.viol_cat.description.format(**violation.fmt_info)}"
-        )
-        print(msg, file=sys.stderr)  # noqa: T201
