@@ -1,8 +1,9 @@
 """Configuration for the Python project to be analyzed."""
 
 from pathlib import Path
+from typing import Self
 
-from pydantic import BaseModel
+from pydantic import BaseModel, model_validator
 
 
 class ProjConfig(BaseModel):
@@ -13,3 +14,21 @@ class ProjConfig(BaseModel):
     tests_rel_path: Path = Path("tests")
     unittest_dir_name: Path = Path("unit")
     use_consolidated_tests_dir: bool = False
+
+    @model_validator(mode="after")
+    def check_consolidation_consistency(self) -> Self:
+        """Check that the configuration is consistent with the consolidation setting."""
+        if self.use_consolidated_tests_dir:
+            if self.unittest_dir_name != Path("."):
+                msg = (
+                    "unittest_dir_name must be '.' when "
+                    "use_consolidated_tests_dir is True"
+                )
+                raise ValueError(msg)
+            if len(self.pkg_names) != 1:
+                msg = (
+                    "pkg_names must have length 1 when "
+                    "use_consolidated_tests_dir is True"
+                )
+                raise ValueError(msg)
+        return self
