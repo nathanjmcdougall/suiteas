@@ -70,9 +70,10 @@ dev-dependencies = [
     "typing-extensions>=4.8.0",
     #
     "ruff==0.1.11",
+    "mypy>=1.8.0",
+    "python-dotenv==1.0.0",
     # ^Sync with .pre-commit-config.yaml
     "pysource-codegen>=0.5.0",
-    "python-dotenv>=1.0.0",
     "pytest-cov>=4.1.0",
 ]
 
@@ -138,6 +139,12 @@ convention = "google"
 
 [tool.suiteas]
 pkg_names=["suiteas"]
+
+[tool.mypy]
+strict = true
+mypy_path = ["src"]
+exclude = ['tests/', 'doc/']
+plugins = ["pydantic.mypy"]
 
 [tool.coverage.report]
 ignore_errors = true

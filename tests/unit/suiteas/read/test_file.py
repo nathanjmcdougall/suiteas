@@ -4,7 +4,12 @@ import pytest
 from pysource_codegen._codegen import generate
 
 from suiteas.domain import Class, File, Func
-from suiteas.read.file import AnalyzedFileSyntaxError, get_file
+from suiteas.read.file import (
+    _FLOW_CTRL,
+    AnalyzedFileSyntaxError,
+    FlowCtrlTree,
+    get_file,
+)
 from suiteas_test.config import FAST_TESTS
 
 
@@ -183,3 +188,8 @@ class TestGetFile:
         except AnalyzedFileSyntaxError:
             return
         assert type(file) == File
+
+
+class TestFlowCtrlTree:
+    def test_correspondence(self) -> None:
+        assert tuple(FlowCtrlTree.__args__) == _FLOW_CTRL
