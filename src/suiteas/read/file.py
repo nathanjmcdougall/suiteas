@@ -1,7 +1,8 @@
 """Utilities for reading-in source code files."""
 import ast
+import sys
 from pathlib import Path
-from typing import Union
+from typing import TypeAlias
 
 from suiteas.domain import Class, File, Func
 
@@ -37,7 +38,11 @@ _IMPORT = (
     ast.Import,
     ast.ImportFrom,
 )
-_TYPING = (ast.AnnAssign,)
+if sys.version_info < (3, 12):
+    _TYPING = (ast.AnnAssign,)
+else:
+    _TYPING = (ast.AnnAssign, ast.TypeAlias)
+
 _EXPR = (ast.expr, ast.Expr)
 _FLOW_CTRL = (
     ast.For,
@@ -49,10 +54,16 @@ _FLOW_CTRL = (
     ast.Try,
     ast.TryStar,
 )
-
-# For 3.12+ only
-if hasattr(ast, "TypeAlias"):
-    _TYPING += (ast.TypeAlias,)
+FlowCtrlTree: TypeAlias = (
+    ast.For
+    | ast.AsyncFor
+    | ast.While
+    | ast.If
+    | ast.With
+    | ast.AsyncWith
+    | ast.Try
+    | ast.TryStar
+)
 
 
 def get_file(path: Path, *, module_name: str) -> File:
@@ -74,7 +85,7 @@ def get_file(path: Path, *, module_name: str) -> File:
 
 
 def _parse_tree(  # noqa: PLR0912, C901
-    tree: ast.Module | Union[_FLOW_CTRL],  # noqa: UP007 since Union[(x,y)] is OK
+    tree: ast.Module | FlowCtrlTree,
     *,
     module_name: str,
 ) -> tuple[list[Func], list[Class], list[str]]:

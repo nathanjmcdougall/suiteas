@@ -203,7 +203,7 @@ def _is_consolidated_tests_dir(
     *,
     pkg_names: list[str],
     tests_dir: Path,
-    unittest_dir_name: Path,
+    unittest_dir_name: Path | None,
 ) -> bool:
     if len(pkg_names) == 1:
         (pkg_name,) = pkg_names
