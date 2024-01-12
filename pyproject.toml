@@ -146,6 +146,9 @@ mypy_path = ["src"]
 exclude = ['tests/', 'doc/']
 plugins = ["pydantic.mypy"]
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
 [tool.coverage.report]
 ignore_errors = true
 show_missing = true

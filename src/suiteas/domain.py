@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from suiteas.config import ProjConfig
 
 
-class TestableCodeObject(BaseModel):
+class TestableCodeObject(BaseModel, extra="forbid"):
     """A testable code object."""
 
     name: str
@@ -31,7 +31,7 @@ class Func(TestableCodeObject):
     """A Python function."""
 
 
-class File(BaseModel):
+class File(BaseModel, extra="forbid"):
     """A Python file."""
 
     path: Path
@@ -40,20 +40,20 @@ class File(BaseModel):
     imported_objs: list[str]
 
 
-class Codebase(BaseModel):
+class Codebase(BaseModel, extra="forbid"):
     """A codebase."""
 
     files: list[File]
 
 
-class PytestClass(BaseModel):
+class PytestClass(BaseModel, extra="forbid"):
     """A Pytest test class."""
 
     name: str
     has_funcs: bool
 
 
-class PytestFile(BaseModel):
+class PytestFile(BaseModel, extra="forbid"):
     """A Pytest test file."""
 
     path: Path
@@ -61,13 +61,13 @@ class PytestFile(BaseModel):
     imported_objs: list[str]
 
 
-class PytestSuite(BaseModel):
+class PytestSuite(BaseModel, extra="forbid"):
     """A Pytest unit test suite."""
 
     pytest_files: list[PytestFile]
 
 
-class Project(BaseModel):
+class Project(BaseModel, extra="forbid"):
     """A Python project."""
 
     codebase: Codebase
