@@ -11,6 +11,32 @@ structure of your project. Then, going forward, it will enforce matching names a
 >
 > _very satisfactory; excellent._
 
+The recommended way to use SuiteAs is using the [`pre-commit`](https://pre-commit.com/) framework. Add the following to your `.pre-commit-config.yaml` file:
+
+```yaml
+- repo: https://github.com/nathanjmcdougall/suiteas
+    rev: v0.2.0
+    hooks:
+      - id: suiteas
+```
+
+You can also install and run SuiteAs as a standalone package:
+
+```bash
+pip install suiteas
+python -m suiteas .
+```
+
+## Rules
+
+SuiteAs will enforce the following rules:
+
+| Rule | Description |
+| ---- | ----------- |
+| SUI001 | Function or class is missing a corresponding test function |
+| SUI002 | Pytest test class is empty |
+| SUI003 | Pytest file does not import the function being tested |
+
 ## Developer Information
 
 ### Package Management
