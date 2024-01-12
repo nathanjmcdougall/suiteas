@@ -10,7 +10,7 @@ def print_violations(violations: list[Violation]) -> None:
         fmt_info = violation.fmt_info or {}
         msg = (
             f"{violation.rel_path}:{violation.line_num}:{violation.char_offset}: "
-            f"SUI{violation.viol_cat.suiteas_code:03d} "
-            f"{violation.viol_cat.description.format(**fmt_info)}"
+            f"SUI{violation.rule.suiteas_code:03d} "
+            f"{violation.rule.description.format(**fmt_info)}"
         )
         print(msg, file=sys.stderr)  # noqa: T201

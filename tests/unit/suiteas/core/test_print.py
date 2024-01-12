@@ -25,7 +25,7 @@ class TestPrintViolations:
             print_violations(
                 [
                     Violation(
-                        viol_cat=missing_test_func,
+                        rule=missing_test_func,
                         rel_path=Path(
                             "src/fakemcfake/example.py",
                         ),
@@ -51,7 +51,7 @@ class TestPrintViolations:
             print_violations(
                 [
                     Violation(
-                        viol_cat=empty_pytest_class,
+                        rule=empty_pytest_class,
                         rel_path=Path(
                             "src/fakemcfake/example.py",
                         ),
@@ -72,7 +72,7 @@ class TestPrintViolations:
             print_violations(
                 [
                     Violation(
-                        viol_cat=unimported_tested_func,
+                        rule=unimported_tested_func,
                         rel_path=Path(
                             "src/fakemcfake/example.py",
                         ),
