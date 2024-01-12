@@ -61,6 +61,7 @@ repos:
           # Sync with pyproject.toml
           - "pydantic>=2.4.2"
           - "python-dotenv==1.0.0"
+          - "pytest-mypy==0.10.3"
 
   - repo: local
     hooks:

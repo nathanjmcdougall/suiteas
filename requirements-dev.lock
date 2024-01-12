@@ -8,6 +8,7 @@
 
 -e file:.
 annotated-types==0.6.0
+attrs==23.2.0
 build==1.0.3
 certifi==2023.7.22
 cfgv==3.4.0
@@ -44,8 +45,9 @@ pydantic-core==2.10.1
 pygments==2.16.1
 pyproject-hooks==1.0.0
 pysource-codegen==0.5.0
-pytest==7.4.3
+pytest==7.4.4
 pytest-cov==4.1.0
+pytest-mypy==0.10.3
 python-dotenv==1.0.0
 pywin32-ctypes==0.2.2
 pyyaml==6.0.1

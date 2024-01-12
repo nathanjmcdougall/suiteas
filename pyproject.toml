@@ -5,7 +5,10 @@ description = "An opinionated testing suite organizer for pytest"
 authors = [
     { name = "Nathan McDougall", email = "nathan.j.mcdougall@gmail.com" },
 ]
-dependencies = ["pydantic>=2.4.2"]  # Sync with .pre-commit-config.yaml
+dependencies = [
+    "pydantic>=2.4.2",
+    "pytest>=7.4.4",
+]  # Sync with .pre-commit-config.yaml
 readme = "README.md"
 requires-python = ">= 3.11" # Sync with ruff target-version, ci.yml
 license = { text = "MIT" }
@@ -72,6 +75,7 @@ dev-dependencies = [
     "ruff==0.1.11",
     "mypy>=1.8.0",
     "python-dotenv==1.0.0",
+    "pytest-mypy==0.10.3",
     # ^Sync with .pre-commit-config.yaml
     "pysource-codegen>=0.5.0",
     "pytest-cov>=4.1.0",

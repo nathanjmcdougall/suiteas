@@ -1,5 +1,6 @@
 """Utilities for reading-in a pytest test file."""
 
+
 from pathlib import Path
 
 from suiteas.core.names import PYTEST_CLASS_PREFIX
