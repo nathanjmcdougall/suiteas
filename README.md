@@ -1,5 +1,15 @@
 # SuiteAs
 
+<!-- badges: start -->
+[![License](https://img.shields.io/github/license/nathanjmcdougall/suiteas)](https://github.com/nathanjmcdougall/suiteas/blob/main/LICENSE.txt)
+[![PyPI version](https://badge.fury.io/py/suiteas.svg)](https://badge.fury.io/py/suiteas)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+[![Linting: Ruff](https://img.shields.io/badge/linting-ruff-yellowgreen)](https://github.com/charliermarsh/ruff)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/nathanjmcdougall/suiteas/main.svg)](https://results.pre-commit.ci/latest/github/nathanjmcdougall/suiteas/main)
+[![codecov](https://codecov.io/gh/nathanjmcdougall/suiteas/branch/develop/graph/badge.svg?token=OUHWT2NL8O)](https://codecov.io/gh/nathanjmcdougall/suiteas)
+[![Downloads](https://static.pepy.tech/badge/suiteas)](https://pepy.tech/project/suiteas)
+<!-- badges: end -->
+
 An opinionated testing suite organizer for pytest.
 
 SuiteAs will automatically generate a skeletonized unit test suite based on the
