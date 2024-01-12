@@ -43,7 +43,7 @@ def get_violations(project: Project) -> list[Violation]:
             if not _pytest_file_has_func_tests(pytest_file=pytest_file, func=func):
                 violations.append(
                     Violation(
-                        viol_cat=missing_test_func,
+                        rule=missing_test_func,
                         rel_path=file.path.relative_to(project.proj_dir),
                         line_num=func.line_num,
                         char_offset=func.char_offset,
@@ -61,7 +61,7 @@ def get_violations(project: Project) -> list[Violation]:
             ):
                 violations.append(
                     Violation(
-                        viol_cat=unimported_tested_func,
+                        rule=unimported_tested_func,
                         rel_path=file.path.relative_to(project.proj_dir),
                         line_num=func.line_num,
                         char_offset=func.char_offset,
@@ -78,7 +78,7 @@ def get_violations(project: Project) -> list[Violation]:
             if not pytest_class.has_funcs:
                 violations.append(
                     Violation(
-                        viol_cat=empty_pytest_class,
+                        rule=empty_pytest_class,
                         rel_path=pytest_file.path.relative_to(project.proj_dir),
                         fmt_info=dict(pytest_class_name=pytest_class.name),
                     ),
