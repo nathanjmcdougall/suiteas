@@ -136,6 +136,8 @@ extend-exclude = [
     "D101", # Class docstrings are not necessary for tests.
     "D102", # Method docstrings are not necessary for tests.
     "D100", # Module docstrings are not necessary for tests.
+    "PLR2004", # Magic numbers are okay in tests.
+    "B011", # Assertion statments are okay in tests.
 ]
 
 [tool.ruff.pydocstyle]

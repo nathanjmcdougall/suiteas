@@ -1,0 +1,5 @@
+[tool.suiteas]
+pkg_names = ["pp8cadfs"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
