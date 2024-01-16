@@ -10,10 +10,12 @@
 [![Downloads](https://static.pepy.tech/badge/suiteas)](https://pepy.tech/project/suiteas)
 <!-- badges: end -->
 
-An opinionated testing suite organizer for pytest.
+An opinionated testing suite organizer and linter for pytest.
 
 SuiteAs will automatically generate a skeletonized unit test suite based on the
-structure of your project. Then, going forward, it will enforce matching names and folder structure between your testing suite and your project.
+structure of your project. Then, going forward, it will enforce matching names and folder structure between your testing suite and your project using linter rules.
+
+For now, only linting is supported; automatic test suite generation will be added later.
 
 > _Sweet As_
 >
