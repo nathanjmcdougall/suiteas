@@ -1,1 +1,0 @@
-Provided full support for Python 3.12 syntax, namely for PEP 695 Type Aliasing.

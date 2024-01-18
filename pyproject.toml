@@ -91,6 +91,10 @@ issue_format = "https://github.com/nathanjmcdougall/suiteas/issues/{issue}"
 directory = "feature"
 name = "Features"
 showcontent = true
+[[tool.towncrier.type]]
+directory = "bugfix"
+name = "Bug fixes"
+showcontent = true
 
 [tool.ruff]
 src = ["src"]
