@@ -121,6 +121,7 @@ class TestGetTOMLConfig:
             unittest_dir_name=Path("myunit"),
             setuptools_pkg_names=["foo_other", "bar_other"],
             project_name="example",
+            ignore=["SUI002"],
         )
 
     def test_syntax_error(self, config_files_parent_dir: Path) -> None:
@@ -165,3 +166,16 @@ class TestGetTOMLConfig:
             ),
         ):
             get_toml_config(config_files_parent_dir / "extra_subsection.toml")
+
+    def test_bad_ignore(self, config_files_parent_dir: Path) -> None:
+        with pytest.raises(
+            ConfigFileError,
+            match=(
+                r"Invalid \[tool.suiteas\] configuration section at .*: "
+                r"1 validation error for TOMLProjConfig\n"
+                r"ignore.0\n"
+                r".* Input should be .* "
+                r"[type=literal_error, input_value='bad', input_type=str].*"
+            ),
+        ):
+            get_toml_config(config_files_parent_dir / "bad_ignore.toml")
