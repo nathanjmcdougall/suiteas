@@ -5,6 +5,8 @@ from typing import Self
 
 from pydantic import BaseModel, model_validator
 
+from suiteas.core.violations import RULE_CODES, RuleCode
+
 
 class ProjConfig(BaseModel):
     """Configuration for the Python project to be analyzed."""
@@ -14,6 +16,7 @@ class ProjConfig(BaseModel):
     tests_rel_path: Path = Path("tests")
     unittest_dir_name: Path = Path("unit")
     use_consolidated_tests_dir: bool = False
+    checks: list[RuleCode] = RULE_CODES
 
     @model_validator(mode="after")
     def check_consolidation_consistency(self) -> Self:

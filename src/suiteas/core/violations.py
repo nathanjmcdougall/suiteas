@@ -1,9 +1,15 @@
 """Utilities for recording violations of the test suite rules."""
 
 
+import typing
 from pathlib import Path
+from typing import Literal, TypeAlias
 
 from pydantic import BaseModel
+
+RuleCode: TypeAlias = Literal["SUI001", "SUI002", "SUI003"]
+
+RULE_CODES: list[RuleCode] = list(typing.get_args(RuleCode))
 
 
 class Rule(BaseModel):
