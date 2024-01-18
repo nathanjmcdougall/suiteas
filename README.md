@@ -39,6 +39,39 @@ pip install suiteas
 python -m suiteas .
 ```
 
+SuiteAs will try to automatically determine your project directory structure and
+configuration, but you can manually configure SuiteAs in a `pyproject.toml` file.
+
+For example, if your project looks like this:
+
+<!-- created with tree.nathanfriend.io -->
+```text
+.
+└── myrepo/
+    ├── src/
+    │   ├── mypkg/
+    │   └── otherpkg/
+    ├── tests/
+    │   ├── unit/
+    │   │   ├── mypkg/
+    │   │   └── otherpkg/
+    │   └── endtoend/
+    └── pyproject.toml
+```
+
+Then you would add this section to `pyproject.toml`:
+
+```TOML
+[tool.suiteas]
+pkg_names = ["mypkg", "otherpkg"]
+src_rel_path = "src"
+tests_rel_path = "tests"
+unittest_dir_name = "unit"
+ignore = ["SUI002"]
+```
+
+The final line will globally disable the linting of the SUI002 rule.
+
 ## Rules
 
 SuiteAs will enforce the following rules:
