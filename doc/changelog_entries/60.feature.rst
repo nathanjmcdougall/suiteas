@@ -1,0 +1,2 @@
+Global `ignore` configuration is now supported, allowing you to disable a linting rule
+completely across all files.
