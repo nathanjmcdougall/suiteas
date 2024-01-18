@@ -7,7 +7,7 @@ from pydantic import BaseModel, ValidationError
 
 from suiteas.config import ProjConfig
 from suiteas.core.names import PYPROJTOML_NAME
-from suiteas.core.violations import RULE_CODES, RuleCode
+from suiteas.core.rules import RULE_CODES, RuleCode
 
 
 class ConfigFileError(ValueError):

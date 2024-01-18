@@ -7,12 +7,12 @@ from pydantic.alias_generators import to_snake
 
 from suiteas.core.names import PYTEST_CLASS_PREFIX
 from suiteas.core.path import path_to_pytest_path
-from suiteas.core.violations import (
-    Violation,
+from suiteas.core.rules import (
     empty_pytest_class,
     missing_test_func,
     unimported_tested_func,
 )
+from suiteas.core.violations import Violation
 from suiteas.domain import File, Func, Project, PytestFile
 
 

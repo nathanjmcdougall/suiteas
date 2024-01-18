@@ -3,12 +3,12 @@ from contextlib import redirect_stderr
 from pathlib import Path
 
 from suiteas.core.print import print_violations
-from suiteas.core.violations import (
-    Violation,
+from suiteas.core.rules import (
     empty_pytest_class,
     missing_test_func,
     unimported_tested_func,
 )
+from suiteas.core.violations import Violation
 
 
 class TestPrintViolations:
