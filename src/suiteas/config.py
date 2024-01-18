@@ -5,7 +5,7 @@ from typing import Self
 
 from pydantic import BaseModel, model_validator
 
-from suiteas.core.violations import RULE_CODES, RuleCode
+from suiteas.core.rules import RULE_CODES, RuleCode
 
 
 class ProjConfig(BaseModel):
