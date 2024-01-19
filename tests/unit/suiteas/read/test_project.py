@@ -34,8 +34,11 @@ class TestGetProject:
                 pytest_files=[
                     PytestFile(
                         path=proj_dir / "tests" / "unit" / "af8o7tt1" / "__init__.py",
-                        pytest_classes=[],
+                        funcs=[],
+                        clses=[],
                         imported_objs=[],
+                        lone_pytest_funcs=[],
+                        pytest_clses=[],
                     ),
                 ],
             ),
@@ -107,8 +110,11 @@ class TestGetProject:
                 pytest_files=[
                     PytestFile(
                         path=proj_dir / "tests" / "unit" / "pp8cadfs" / "__init__.py",
-                        pytest_classes=[],
+                        funcs=[],
+                        clses=[],
                         imported_objs=[],
+                        lone_pytest_funcs=[],
+                        pytest_clses=[],
                     ),
                 ],
             ),

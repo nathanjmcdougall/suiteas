@@ -103,8 +103,8 @@ def _get_sui002_violations(
 ) -> list[Violation]:
     violations = []
     for pytest_file in project.pytest_suite.pytest_files:
-        for pytest_class in pytest_file.pytest_classes:
-            if not pytest_class.has_funcs:
+        for pytest_class in pytest_file.pytest_clses:
+            if not pytest_class.funcs:
                 violations.append(
                     Violation(
                         rule=empty_pytest_class,
@@ -151,7 +151,7 @@ def _pytest_file_has_func_tests(
     if pytest_file is None:
         return False
 
-    for pytest_class in pytest_file.pytest_classes:
+    for pytest_class in pytest_file.pytest_clses:
         if to_snake(pytest_class.name).replace(
             "_",
             "",

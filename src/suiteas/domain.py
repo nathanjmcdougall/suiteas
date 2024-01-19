@@ -7,8 +7,8 @@ from pydantic import BaseModel
 from suiteas.config import ProjConfig
 
 
-class TestableCodeObject(BaseModel, extra="forbid"):
-    """A testable code object."""
+class CodeObject(BaseModel, extra="forbid"):
+    """A code object."""
 
     name: str
     full_name: str
@@ -21,18 +21,18 @@ class TestableCodeObject(BaseModel, extra="forbid"):
         return self.name.startswith("_")
 
 
-class Class(TestableCodeObject):
-    """A Python class."""
-
-    has_funcs: bool
+class Func(CodeObject):
+    """A general Python function."""
 
 
-class Func(TestableCodeObject):
-    """A Python function."""
+class Class(CodeObject):
+    """A general Python class."""
+
+    funcs: list[Func]
 
 
 class File(BaseModel, extra="forbid"):
-    """A Python file."""
+    """A general Python file."""
 
     path: Path
     funcs: list[Func]
@@ -41,24 +41,26 @@ class File(BaseModel, extra="forbid"):
 
 
 class Codebase(BaseModel, extra="forbid"):
-    """A codebase."""
+    """A Python codebase."""
 
     files: list[File]
 
 
-class PytestClass(BaseModel, extra="forbid"):
+class PytestFunc(Func):
+    """A Pytest test function."""
+
+
+class PytestClass(Class):
     """A Pytest test class."""
 
-    name: str
-    has_funcs: bool
+    pytest_funcs: list[PytestFunc]
 
 
-class PytestFile(BaseModel, extra="forbid"):
+class PytestFile(File):
     """A Pytest test file."""
 
-    path: Path
-    pytest_classes: list[PytestClass]
-    imported_objs: list[str]
+    lone_pytest_funcs: list[PytestFunc]
+    pytest_clses: list[PytestClass]
 
 
 class PytestSuite(BaseModel, extra="forbid"):

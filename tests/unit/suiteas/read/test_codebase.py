@@ -79,7 +79,7 @@ class TestGetCodebase:
                             full_name="ow9xem9x.goodbye.Banana",
                             line_num=4,
                             char_offset=0,
-                            has_funcs=False,
+                            funcs=[],
                         ),
                     ],
                     imported_objs=[],

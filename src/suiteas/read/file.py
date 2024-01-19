@@ -18,6 +18,7 @@ _FUNC_DEF = (
     ast.AsyncFunctionDef,
 )
 _CLS_DEF = (ast.ClassDef,)
+ClsDefTree: TypeAlias = ast.ClassDef
 _STMT = (
     ast.Return,
     ast.Delete,
@@ -85,7 +86,7 @@ def get_file(path: Path, *, module_name: str) -> File:
 
 
 def _parse_tree(  # noqa: PLR0912, C901
-    tree: ast.Module | FlowCtrlTree,
+    tree: ast.Module | FlowCtrlTree | ClsDefTree,
     *,
     module_name: str,
 ) -> tuple[list[Func], list[Class], list[str]]:
@@ -113,14 +114,17 @@ def _parse_tree(  # noqa: PLR0912, C901
                 ),
             )
         elif isinstance(node, _CLS_DEF):
-            has_funcs = any(isinstance(n, _FUNC_DEF) for n in node.body)
+            cls_funcs, _, _ = _parse_tree(
+                node,
+                module_name=f"{module_name}.{node.name}",
+            )
             clses.append(
                 Class(
                     name=node.name,
                     full_name=f"{module_name}.{node.name}",
                     line_num=node.lineno,
                     char_offset=node.col_offset,
-                    has_funcs=has_funcs,
+                    funcs=cls_funcs,
                 ),
             )
         elif isinstance(node, _IMPORT):

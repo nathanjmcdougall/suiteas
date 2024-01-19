@@ -3,8 +3,8 @@
 
 from pathlib import Path
 
-from suiteas.core.names import PYTEST_CLASS_PREFIX
-from suiteas.domain import Class, PytestClass, PytestFile
+from suiteas.core.names import PYTEST_CLASS_PREFIX, PYTEST_FUNC_PREFIX
+from suiteas.domain import Class, Func, PytestClass, PytestFile, PytestFunc
 from suiteas.read.file import get_file
 
 
@@ -14,18 +14,43 @@ def get_pytest_file(path: Path, *, module_name: str) -> PytestFile:
     pytest_classes = [
         PytestClass(
             name=cls.name,
-            has_funcs=cls.has_funcs,
+            full_name=cls.full_name,
+            line_num=cls.line_num,
+            char_offset=cls.char_offset,
+            funcs=cls.funcs,
+            pytest_funcs=[
+                PytestFunc(
+                    name=func.name,
+                    full_name=func.full_name,
+                    line_num=func.line_num,
+                    char_offset=func.char_offset,
+                )
+                for func in cls.funcs
+                if _is_pytest_func(func)
+            ],
         )
         for cls in file.clses
         if _is_pytest_class(cls)
     ]
+    lone_pytest_funcs = [
+        PytestFunc(**func.model_dump()) for func in file.funcs if _is_pytest_func(func)
+    ]
+
     return PytestFile(
         path=file.path,
-        pytest_classes=pytest_classes,
+        funcs=file.funcs,
+        clses=file.clses,
         imported_objs=file.imported_objs,
+        lone_pytest_funcs=lone_pytest_funcs,
+        pytest_clses=pytest_classes,
     )
 
 
 def _is_pytest_class(cls: Class) -> bool:
     """Check if a class is a pytest class."""
     return cls.name.startswith(PYTEST_CLASS_PREFIX)
+
+
+def _is_pytest_func(func: Func) -> bool:
+    """Check if a function is a pytest function."""
+    return func.name.startswith(PYTEST_FUNC_PREFIX)
