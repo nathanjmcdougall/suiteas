@@ -1,3 +1,19 @@
+0.3.0 (2024-01-18)
+==================
+
+Features
+--------
+
+- Global `ignore` configuration is now supported, allowing you to disable a linting rule
+  completely across all files. (https://github.com/nathanjmcdougall/suiteas/issues/60)
+
+
+Bug fixes
+---------
+
+- Provided full support for Python 3.12 syntax, namely for PEP 695 Type Aliasing. (https://github.com/nathanjmcdougall/suiteas/issues/40)
+
+
 0.2.0 (2024-01-04)
 ==================
 

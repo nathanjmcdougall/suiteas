@@ -3,12 +3,12 @@ from contextlib import redirect_stderr
 from pathlib import Path
 
 from suiteas.core.print import print_violations
-from suiteas.core.violations import (
-    Violation,
+from suiteas.core.rules import (
     empty_pytest_class,
     missing_test_func,
     unimported_tested_func,
 )
+from suiteas.core.violations import Violation
 
 
 class TestPrintViolations:
@@ -25,7 +25,7 @@ class TestPrintViolations:
             print_violations(
                 [
                     Violation(
-                        viol_cat=missing_test_func,
+                        rule=missing_test_func,
                         rel_path=Path(
                             "src/fakemcfake/example.py",
                         ),
@@ -51,7 +51,7 @@ class TestPrintViolations:
             print_violations(
                 [
                     Violation(
-                        viol_cat=empty_pytest_class,
+                        rule=empty_pytest_class,
                         rel_path=Path(
                             "src/fakemcfake/example.py",
                         ),
@@ -72,7 +72,7 @@ class TestPrintViolations:
             print_violations(
                 [
                     Violation(
-                        viol_cat=unimported_tested_func,
+                        rule=unimported_tested_func,
                         rel_path=Path(
                             "src/fakemcfake/example.py",
                         ),
