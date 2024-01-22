@@ -63,14 +63,15 @@ repos:
           - "python-dotenv==1.0.0"
           - "pytest-mypy==0.10.3"
 
-  - repo: local
-    hooks:
-      - id: suiteas
-        name: suiteas
-        entry: python -m suiteas_hook
-        language: python
-        types: [python]
-        require_serial: true
-        additional_dependencies:
-          # Sync with pyproject.toml
-          - "pydantic>=2.4.2"
+  # - repo: local
+  #   hooks:
+  #     - id: suiteas
+  #       name: suiteas
+  #       entry: python -m suiteas_hook
+  #       language: python
+  #       types: [python]
+  #       require_serial: true
+  #       additional_dependencies:
+  #         # Sync with pyproject.toml
+  #         - "pydantic>=2.4.2"
+  #         - "pytest-mypy==0.10.3"

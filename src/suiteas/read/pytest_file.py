@@ -3,13 +3,23 @@
 
 from pathlib import Path
 
+import pytest
+
 from suiteas.core.names import PYTEST_CLASS_PREFIX, PYTEST_FUNC_PREFIX
 from suiteas.domain import Class, Func, PytestClass, PytestFile, PytestFunc
 from suiteas.read.file import get_file
 
 
-def get_pytest_file(path: Path, *, module_name: str) -> PytestFile:
+def get_pytest_file(
+    path: Path,
+    *,
+    module_name: str,
+    pytest_items: list[pytest.Item] | None = None,
+) -> PytestFile:
     """Read a pytest test file."""
+    if pytest_items is None:
+        pytest_items = []
+
     file = get_file(path, module_name=module_name)
     pytest_classes = [
         PytestClass(
@@ -26,14 +36,16 @@ def get_pytest_file(path: Path, *, module_name: str) -> PytestFile:
                     char_offset=func.char_offset,
                 )
                 for func in cls.funcs
-                if _is_pytest_func(func)
+                if _is_pytest_func(func, pytest_items=pytest_items)
             ],
         )
         for cls in file.clses
         if _is_pytest_class(cls)
     ]
     lone_pytest_funcs = [
-        PytestFunc(**func.model_dump()) for func in file.funcs if _is_pytest_func(func)
+        PytestFunc(**func.model_dump())
+        for func in file.funcs
+        if _is_pytest_func(func, pytest_items=pytest_items)
     ]
 
     return PytestFile(
@@ -51,6 +63,8 @@ def _is_pytest_class(cls: Class) -> bool:
     return cls.name.startswith(PYTEST_CLASS_PREFIX)
 
 
-def _is_pytest_func(func: Func) -> bool:
+def _is_pytest_func(func: Func, *, pytest_items: list[pytest.Item]) -> bool:
     """Check if a function is a pytest function."""
+    if pytest_items:
+        raise NotImplementedError
     return func.name.startswith(PYTEST_FUNC_PREFIX)
