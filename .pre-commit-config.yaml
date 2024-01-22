@@ -46,7 +46,7 @@ repos:
         args: [--assume-in-merge]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.13 # Sync with pyproject.toml
+    rev: v0.1.14 # Sync with pyproject.toml
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
