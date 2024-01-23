@@ -1,0 +1,5 @@
+[tool.suiteas]
+pkg_names = ["kw6nn02r"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,5 @@
+[tool.suiteas]
+pkg_names = ["w21ihpvi"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

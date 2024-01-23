@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from suiteas.read.pytest_collect import collect_test_items
 
 
@@ -47,3 +49,36 @@ class TestCollectTestItems:
         }
 
         assert results == expected
+
+    def test_all_suppressed(self, projs_parent_dir: Path) -> None:
+        assert collect_test_items(projs_parent_dir / "ignored_tests") == []
+
+    def test_partially_suppressed(self, projs_parent_dir: Path) -> None:
+        assert (
+            len(collect_test_items(projs_parent_dir / "partially_ignored_tests")) == 1
+        )
+
+    def test_nonexistent(self) -> None:
+        with pytest.raises(FileNotFoundError):
+            collect_test_items(Path("Fakey McFake"))
+
+    def test_nondir(self, tmp_path: Path) -> None:
+        (tmp_path / "fakey").touch()
+        with pytest.raises(ValueError, match="is not a directory"):
+            collect_test_items(tmp_path / "fakey")
+
+    def test_decorated(self, projs_parent_dir: Path) -> None:
+        items = collect_test_items(projs_parent_dir / "decorated_test")
+        assert len(items) == 3
+        item1, item2, item3 = items
+        assert item1.name == "test_nothing"
+        assert item2.name == "test_param[True]"
+        assert item3.name == "test_param[False]"
+
+        _, lineno, _ = item2.reportinfo()
+        assert lineno is not None
+        assert lineno + 1 == 6  # i.e. the decorator, not the function itself.
+
+        _, lineno, _ = item3.reportinfo()
+        assert lineno is not None
+        assert lineno + 1 == 6

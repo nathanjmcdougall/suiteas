@@ -19,7 +19,14 @@ class PytestPlugin:
 
 
 def collect_test_items(path: Path) -> list[pytest.Item]:
-    """Collect all tests in a directory using pytest."""
+    """Collect all tests in a project directory using pytest."""
+    if not path.exists():
+        msg = f"Path {path.as_posix()} does not exist."
+        raise FileNotFoundError(msg)
+
+    if not path.is_dir():
+        msg = f"Path {path.as_posix()} is not a directory."
+        raise ValueError(msg)
 
     plugin = PytestPlugin()
     pytest.main(["--collect-only", path.as_posix()], plugins=[plugin])

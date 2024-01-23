@@ -17,9 +17,6 @@ def get_pytest_file(
     pytest_items: list[pytest.Item] | None = None,
 ) -> PytestFile:
     """Read a pytest test file."""
-    if pytest_items is None:
-        pytest_items = []
-
     file = get_file(path, module_name=module_name)
     pytest_classes = [
         PytestClass(
@@ -63,8 +60,17 @@ def _is_pytest_class(cls: Class) -> bool:
     return cls.name.startswith(PYTEST_CLASS_PREFIX)
 
 
-def _is_pytest_func(func: Func, *, pytest_items: list[pytest.Item]) -> bool:
+def _is_pytest_func(func: Func, *, pytest_items: list[pytest.Item] | None) -> bool:
     """Check if a function is a pytest function."""
-    if pytest_items:
-        raise NotImplementedError
+    if pytest_items is not None:
+        return any(func.line_num == _get_main_line_num(item) for item in pytest_items)
+
     return func.name.startswith(PYTEST_FUNC_PREFIX)
+
+
+def _get_main_line_num(item: pytest.Item) -> int:
+    _, pytest_linenum, _ = item.reportinfo()
+    if pytest_linenum is None:
+        msg = "Unhandled case of None line-number reported for a pytest Item."
+        raise NotImplementedError(msg)
+    return pytest_linenum + 1

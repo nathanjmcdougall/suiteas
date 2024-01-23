@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from suiteas.domain import Class, Func, PytestClass, PytestFile, PytestFunc
+from suiteas.read.pytest_collect import collect_test_items
 from suiteas.read.pytest_file import get_pytest_file
 
 
@@ -131,5 +132,37 @@ class TestGetPytestFile:
                 )
                 for cls in [cls1, cls2]
             ],
+        )
+        assert pytest_file == exp_pytest_file
+
+    def test_ignored_tests(self, projs_parent_dir: Path) -> None:
+        proj_dir = projs_parent_dir / "ignored_tests"
+        pytest_items = collect_test_items(proj_dir)
+        pytest_file = get_pytest_file(
+            proj_dir / "tests" / "unit" / "kw6nn02r" / "test_hello.py",
+            module_name="kw6nn02r.test_hello",
+            pytest_items=pytest_items,
+        )
+
+        exp_pytest_file = PytestFile(
+            path=proj_dir / "tests" / "unit" / "kw6nn02r" / "test_hello.py",
+            funcs=[
+                Func(
+                    name="test_nothing",
+                    full_name="kw6nn02r.test_hello.test_nothing",
+                    line_num=3,
+                    char_offset=0,
+                ),
+                Func(
+                    name="test_param",
+                    full_name="kw6nn02r.test_hello.test_param",
+                    line_num=7,
+                    char_offset=0,
+                ),
+            ],
+            clses=[],
+            imported_objs=["pytest"],
+            lone_pytest_funcs=[],
+            pytest_clses=[],
         )
         assert pytest_file == exp_pytest_file
