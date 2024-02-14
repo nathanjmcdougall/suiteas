@@ -70,7 +70,7 @@ dev-dependencies = [
     "typing-extensions>=4.8.0",
     #
     "ruff==0.1.14",
-    "mypy>=1.8.0",
+    "mypy==1.8.0",
     "python-dotenv==1.0.0",
     # ^Sync with .pre-commit-config.yaml
     "pysource-codegen>=0.5.0",
