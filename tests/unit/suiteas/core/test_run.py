@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from suiteas.core.run import print_violations, run_suiteas, run_suiteas_main
+from suiteas.core.run import run_suiteas, run_suiteas_main
 
 
 class TestRunSuiteAsMain:
@@ -13,11 +13,6 @@ class TestRunSuiteAsMain:
         with pytest.raises(FileNotFoundError):
             run_suiteas_main([])
         os.chdir(old_cwd)
-
-
-class TestPrintViolations:
-    def test_nothing(self) -> None:
-        _ = print_violations
 
 
 class TestRunSuiteAs:

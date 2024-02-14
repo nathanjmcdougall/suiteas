@@ -46,10 +46,22 @@ repos:
         args: [--assume-in-merge]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.9
+    rev: v0.2.1 # Sync with pyproject.toml
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0 # Sync with pyproject.toml
+    hooks:
+      - id: mypy
+        args: ["."]
+        pass_filenames: false
+        additional_dependencies:
+          # Sync with pyproject.toml
+          - "pydantic>=2.4.2"
+          - "tomli>=2.0.1"
+          - "python-dotenv==1.0.0"
 
   - repo: local
     hooks:
@@ -60,4 +72,6 @@ repos:
         types: [python]
         require_serial: true
         additional_dependencies:
-          - "pydantic>=2.4.2" # Sync with pyproject.toml
+          # Sync with pyproject.toml
+          - "pydantic>=2.4.2"
+          - "tomli>=2.0.1"

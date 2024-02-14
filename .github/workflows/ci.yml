@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+    branches: ["main", "develop"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"] # Sync with requires-python in pyproject.toml
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python --version
+          pip install --upgrade pip
+          pip install -r requirements-dev.lock
+
+      - name: Build
+        run: |
+          pip install build
+          python -m build
+
+      - name: Test with pytest
+        run: |
+          pytest -v --cov --junitxml=test-reports/report.xml --cov-config=pyproject.toml
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3

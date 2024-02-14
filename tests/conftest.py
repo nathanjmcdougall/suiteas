@@ -1,3 +1,4 @@
 """Pytest fixture definitions."""
 
-pytest_plugins = ["tests.fixtures.paths", "tests.fixtures.names"]
+collect_ignore_glob = ["assets/**"]
+pytest_plugins = ["tests.fixtures.paths"]

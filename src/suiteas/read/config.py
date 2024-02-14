@@ -1,12 +1,13 @@
 """Utilities for reading a project's configuration."""
-import tomllib
 from pathlib import Path
 from typing import Any
 
+import tomli
 from pydantic import BaseModel, ValidationError
 
 from suiteas.config import ProjConfig
 from suiteas.core.names import PYPROJTOML_NAME
+from suiteas.core.rules import RULE_CODES, RuleCode
 
 
 class ConfigFileError(ValueError):
@@ -30,6 +31,7 @@ class TOMLProjConfig(BaseModel):
     unittest_dir_name: Path | None = None
     project_name: str | None = None
     setuptools_pkg_names: list[str] | None = None
+    ignore: list[RuleCode] | None = None
     model_config = dict(extra="forbid")
 
 
@@ -95,6 +97,8 @@ def get_config(*, proj_dir: Path) -> ProjConfig:
         unittests_dir=unittests_dir,
         use_consolidated_tests_dir=use_consolidated_tests_dir,
     )
+    checks = list(set(RULE_CODES) - set(toml_config.ignore or []))
+    checks.sort()
 
     return ProjConfig(
         pkg_names=pkg_names,
@@ -102,6 +106,7 @@ def get_config(*, proj_dir: Path) -> ProjConfig:
         tests_rel_path=tests_rel_path,
         unittest_dir_name=unittest_dir_name,
         use_consolidated_tests_dir=use_consolidated_tests_dir,
+        checks=checks,
     )
 
 
@@ -203,7 +208,7 @@ def _is_consolidated_tests_dir(
     *,
     pkg_names: list[str],
     tests_dir: Path,
-    unittest_dir_name: Path,
+    unittest_dir_name: Path | None,
 ) -> bool:
     if len(pkg_names) == 1:
         (pkg_name,) = pkg_names
@@ -269,7 +274,7 @@ def get_toml_config(toml_path: Path) -> TOMLProjConfig:
         msg = f"Configuration file is empty at {toml_path}"
         raise EmptyConfigFileError(msg)
 
-    parsed_toml: dict[str, Any] = tomllib.loads(pyproject_contents)
+    parsed_toml: dict[str, Any] = tomli.loads(pyproject_contents)
     config_by_tool: dict[str, Any] = parsed_toml.get("tool", {})
 
     try:
