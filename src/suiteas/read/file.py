@@ -44,16 +44,28 @@ else:
     _TYPING = (ast.AnnAssign, ast.TypeAlias)
 
 _EXPR = (ast.expr, ast.Expr)
-_FLOW_CTRL = (
-    ast.For,
-    ast.AsyncFor,
-    ast.While,
-    ast.If,
-    ast.With,
-    ast.AsyncWith,
-    ast.Try,
-    ast.TryStar,
-)
+if sys.version_info < (3, 11):
+    _FLOW_CTRL = (
+        ast.For,
+        ast.AsyncFor,
+        ast.While,
+        ast.If,
+        ast.With,
+        ast.AsyncWith,
+        ast.Try,
+    )
+else:
+    _FLOW_CTRL = (
+        ast.For,
+        ast.AsyncFor,
+        ast.While,
+        ast.If,
+        ast.With,
+        ast.AsyncWith,
+        ast.Try,
+        ast.TryStar,
+    )
+
 FlowCtrlTree: TypeAlias = (
     ast.For
     | ast.AsyncFor
