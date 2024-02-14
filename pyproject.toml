@@ -7,7 +7,7 @@ authors = [
 ]
 dependencies = ["pydantic>=2.4.2"] # Sync with .pre-commit-config.yaml
 readme = "README.md"
-requires-python = ">= 3.11" # Sync with ruff target-version, ci.yml
+requires-python = ">= 3.10" # Sync with ruff target-version, ci.yml
 license = { text = "MIT" }
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
@@ -17,6 +17,7 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Testing",
@@ -100,7 +101,7 @@ showcontent = true
 src = ["src"]
 extend-exclude = ["tests/assets/**"]
 line-length = 88
-target-version = "py311"
+target-version = "py310"
 
 [tool.ruff.lint]
 select = ["ALL"]
