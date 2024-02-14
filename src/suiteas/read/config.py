@@ -1,8 +1,8 @@
 """Utilities for reading a project's configuration."""
-import tomllib
 from pathlib import Path
 from typing import Any
 
+import tomli
 from pydantic import BaseModel, ValidationError
 
 from suiteas.config import ProjConfig
@@ -274,7 +274,7 @@ def get_toml_config(toml_path: Path) -> TOMLProjConfig:
         msg = f"Configuration file is empty at {toml_path}"
         raise EmptyConfigFileError(msg)
 
-    parsed_toml: dict[str, Any] = tomllib.loads(pyproject_contents)
+    parsed_toml: dict[str, Any] = tomli.loads(pyproject_contents)
     config_by_tool: dict[str, Any] = parsed_toml.get("tool", {})
 
     try:
