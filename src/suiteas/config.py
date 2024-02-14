@@ -1,9 +1,9 @@
 """Configuration for the Python project to be analyzed."""
 
 from pathlib import Path
-from typing import Self
 
 from pydantic import BaseModel, model_validator
+from typing_extensions import Self
 
 from suiteas.core.rules import RULE_CODES, RuleCode
 

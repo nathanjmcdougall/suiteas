@@ -1,7 +1,7 @@
-import tomllib
 from pathlib import Path
 
 import pytest
+import tomli
 
 from suiteas.domain import ProjConfig
 from suiteas.read.config import (
@@ -125,7 +125,7 @@ class TestGetTOMLConfig:
         )
 
     def test_syntax_error(self, config_files_parent_dir: Path) -> None:
-        with pytest.raises(tomllib.TOMLDecodeError):
+        with pytest.raises(tomli.TOMLDecodeError):
             get_toml_config(config_files_parent_dir / "syntax_err.toml")
 
     def test_lists(self, config_files_parent_dir: Path) -> None:
