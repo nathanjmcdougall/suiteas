@@ -4,8 +4,6 @@ import pytest
 
 from suiteas.read.pytest_collect import collect_test_items
 
-TEST_HELLO_PATH = Path("tests/unit/h10mfz3s/test_hello.py")
-
 
 class TestCollectTestItems:
     def test_empty(self, projs_parent_dir: Path) -> None:
@@ -14,7 +12,7 @@ class TestCollectTestItems:
     def test_one_test(self, projs_parent_dir: Path) -> None:
         (item,) = collect_test_items(projs_parent_dir / "one_test")
         (relfspath, lineno, testname) = item.location
-        assert Path(relfspath) == TEST_HELLO_PATH
+        assert Path(relfspath) == Path("tests/unit/cnmbqr9a/test_hello.py")
         assert lineno is not None
         assert lineno + 1 == 19
         assert testname == "TestThings.test_nothing"
@@ -27,11 +25,12 @@ class TestCollectTestItems:
             assert lineno is not None
             results.add((Path(relfspath), lineno + 1, testname))
 
+        test_hello_path = Path("tests/unit/h10mfz3s/test_hello.py")
         expected = {
-            (TEST_HELLO_PATH, 8, "TestThings.test_nothing[True]"),
-            (TEST_HELLO_PATH, 8, "TestThings.test_nothing[False]"),
-            (TEST_HELLO_PATH, 15, "TestParam.test_nothing[True]"),
-            (TEST_HELLO_PATH, 15, "TestParam.test_nothing[False]"),
+            (test_hello_path, 8, "TestThings.test_nothing[True]"),
+            (test_hello_path, 8, "TestThings.test_nothing[False]"),
+            (test_hello_path, 15, "TestParam.test_nothing[True]"),
+            (test_hello_path, 15, "TestParam.test_nothing[False]"),
         }
 
         assert results == expected
