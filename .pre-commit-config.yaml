@@ -46,7 +46,7 @@ repos:
         args: [--assume-in-merge]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.13 # Sync with pyproject.toml
+    rev: v0.2.2 # Sync with pyproject.toml
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
@@ -60,18 +60,20 @@ repos:
         additional_dependencies:
           # Sync with pyproject.toml
           - "pydantic>=2.4.2"
+          - "tomli>=2.0.1"
           - "python-dotenv==1.0.0"
           - "pytest-mypy==0.10.3"
 
-  # - repo: local
-  #   hooks:
-  #     - id: suiteas
-  #       name: suiteas
-  #       entry: python -m suiteas_hook
-  #       language: python
-  #       types: [python]
-  #       require_serial: true
-  #       additional_dependencies:
-  #         # Sync with pyproject.toml
-  #         - "pydantic>=2.4.2"
-  #         - "pytest-mypy==0.10.3"
+  - repo: local
+    hooks:
+      - id: suiteas
+        name: suiteas
+        entry: python -m suiteas_hook
+        language: python
+        types: [python]
+        require_serial: true
+        additional_dependencies:
+          # Sync with pyproject.toml
+          - "pydantic>=2.4.2"
+          - "tomli>=2.0.1"
+          - "pytest-mypy==0.10.3"

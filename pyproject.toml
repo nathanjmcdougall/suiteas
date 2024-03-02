@@ -7,10 +7,11 @@ authors = [
 ]
 dependencies = [
     "pydantic>=2.4.2",
+    "tomli>=2.0.1",
     "pytest>=7.4.4",
-]  # Sync with .pre-commit-config.yaml
+] # Sync with .pre-commit-config.yaml
 readme = "README.md"
-requires-python = ">= 3.11" # Sync with ruff target-version, ci.yml
+requires-python = ">= 3.10" # Sync with ruff target-version, ci.yml
 license = { text = "MIT" }
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
@@ -20,6 +21,7 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Testing",
@@ -72,8 +74,8 @@ dev-dependencies = [
     "pytest>=7.4.3",
     "typing-extensions>=4.8.0",
     #
-    "ruff==0.1.13",
-    "mypy>=1.8.0",
+    "ruff==0.2.2",
+    "mypy==1.8.0",
     "python-dotenv==1.0.0",
     "pytest-mypy==0.10.3",
     # ^Sync with .pre-commit-config.yaml
@@ -102,29 +104,32 @@ showcontent = true
 
 [tool.ruff]
 src = ["src"]
+extend-exclude = ["tests/assets/**"]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "S101",   # Use of assert is controversial but in any case is useful with pytest
-    "D202",   # This is controversial, it is useful to have a blank line after a docstring
-    "D203",   # This is controversial, no need to have a blank line before a docstring
-    "D213",   # This conflicts with D212 and violates PEP 257
-    "D406",   # This rule is for non-Google style docstrings
-    "D407",   # This rule is for non-Google style docstrings
-    "D408",   # This rule is for non-Google style docstrings
-    "D409",   # This rule is for non-Google style docstrings
-    "RET504", # This is controversial, named returns are often clearer.
-    "C408",   # This is controversial, calls to `dict` can be more idiomatic than {}.
-    "ANN101", # This is controversial, `self` doesn't need a verbose type annotation.
-    "ANN102", # This is controversial, `cls` doesn't need a verbose type annotation.
-    "ANN401", # This is too strict for dunder methods.
-    "PTH201", # This is controversial, when dealing with relative paths "." is clearer.
-    "PERF401",# This can hurt readability; the performance is not always worth it.
+    "S101",    # Use of assert is controversial but in any case is useful with pytest
+    "D202",    # This is controversial, it is useful to have a blank line after a docstring
+    "D203",    # This is controversial, no need to have a blank line before a docstring
+    "D213",    # This conflicts with D212 and violates PEP 257
+    "D406",    # This rule is for non-Google style docstrings
+    "D407",    # This rule is for non-Google style docstrings
+    "D408",    # This rule is for non-Google style docstrings
+    "D409",    # This rule is for non-Google style docstrings
+    "RET504",  # This is controversial, named returns are often clearer.
+    "C408",    # This is controversial, calls to `dict` can be more idiomatic than {}.
+    "ANN101",  # This is controversial, `self` doesn't need a verbose type annotation.
+    "ANN102",  # This is controversial, `cls` doesn't need a verbose type annotation.
+    "ANN401",  # This is too strict for dunder methods.
+    "PTH201",  # This is controversial, when dealing with relative paths "." is clearer.
+    "PERF401", # This can hurt readability; the performance is not always worth it.
 ]
-line-length = 88
-target-version = "py311"
-extend-exclude = [
-    "tests/assets/**",
-]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [tool.ruff.extend-per-file-ignores]
 "src/suiteas/**/__init__.py" = [
@@ -137,18 +142,15 @@ extend-exclude = [
     "D104", # __init__.py files do not need a docstring necessarily.
 ]
 "tests/**/*.py" = [
-    "D101", # Class docstrings are not necessary for tests.
-    "D102", # Method docstrings are not necessary for tests.
-    "D100", # Module docstrings are not necessary for tests.
+    "D101",    # Class docstrings are not necessary for tests.
+    "D102",    # Method docstrings are not necessary for tests.
+    "D100",    # Module docstrings are not necessary for tests.
     "PLR2004", # Magic numbers are okay in tests.
-    "B011", # Assertion statments are okay in tests.
+    "B011",    # Assertion statments are okay in tests.
 ]
 
-[tool.ruff.pydocstyle]
-convention = "google"
-
 [tool.suiteas]
-pkg_names=["suiteas"]
+pkg_names = ["suiteas"]
 
 [tool.mypy]
 strict = true
@@ -163,11 +165,11 @@ testpaths = ["tests"]
 ignore_errors = true
 show_missing = true
 exclude_lines = [
-  # Don't complain if tests don't hit defensive assertion code:
-  "raise AssertionError",
-  # Don't complain if non-runnable code isn't run:
-  "if __name__ == .__main__.:",
-  "if TYPE_CHECKING:",
-  # Don't complain about abstract methods, they aren't run:
-  "@(abc\\.)?abstractmethod",
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    # Don't complain if non-runnable code isn't run:
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    # Don't complain about abstract methods, they aren't run:
+    "@(abc\\.)?abstractmethod",
 ]

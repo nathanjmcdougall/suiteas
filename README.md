@@ -27,7 +27,7 @@ The recommended way to use SuiteAs is using the [`pre-commit`](https://pre-commi
 
 ```yaml
 - repo: https://github.com/nathanjmcdougall/suiteas
-    rev: v0.2.0
+    rev: v0.3.1
     hooks:
       - id: suiteas
 ```

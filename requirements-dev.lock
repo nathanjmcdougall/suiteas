@@ -56,8 +56,9 @@ requests==2.31.0
 requests-toolbelt==1.0.0
 rfc3986==2.0.0
 rich==13.6.0
-ruff==0.1.13
+ruff==0.2.2
 setuptools-scm==8.0.4
+tomli==2.0.1
 towncrier==23.10.0
 twine==4.0.2
 typing-extensions==4.8.0
