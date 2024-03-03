@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from suiteas.domain import Class, Func, PytestClass, PytestFile, PytestFunc
+from suiteas.domain import Class, Decorator, Func, PytestClass, PytestFile, PytestFunc
 from suiteas.read.pytest_collect import collect_test_items
 from suiteas.read.pytest_file import get_pytest_file
 
@@ -74,6 +74,7 @@ class TestGetPytestFile:
                     ),
                     line_num=2,
                     char_offset=4,
+                    decs=[],
                 ),
             ],
         )
@@ -112,6 +113,7 @@ class TestGetPytestFile:
                     full_name="example.test_two_classes.TestMyClass.test_my_func",
                     line_num=2,
                     char_offset=4,
+                    decs=[],
                 ),
             ],
         )
@@ -158,12 +160,14 @@ class TestGetPytestFile:
                     full_name="kw6nn02r.test_hello.test_nothing",
                     line_num=3,
                     char_offset=0,
+                    decs=[],
                 ),
                 Func(
                     name="test_param",
                     full_name="kw6nn02r.test_hello.test_param",
                     line_num=7,
                     char_offset=0,
+                    decs=[Decorator(line_num=6)],
                 ),
             ],
             clses=[],
@@ -174,6 +178,7 @@ class TestGetPytestFile:
                     full_name="kw6nn02r.test_hello.test_nothing",
                     line_num=3,
                     char_offset=0,
+                    decs=[],
                     is_collected=False,
                 ),
                 PytestFunc(
@@ -181,6 +186,7 @@ class TestGetPytestFile:
                     full_name="kw6nn02r.test_hello.test_param",
                     line_num=7,
                     char_offset=0,
+                    decs=[Decorator(line_num=6)],
                     is_collected=False,
                 ),
             ],
@@ -205,12 +211,14 @@ class TestGetPytestFile:
                     full_name="z0foz1cj.test_hello.test_nothing",
                     line_num=3,
                     char_offset=0,
+                    decs=[],
                 ),
                 Func(
                     name="test_param",
                     full_name="z0foz1cj.test_hello.test_param",
                     line_num=7,
                     char_offset=0,
+                    decs=[Decorator(line_num=6)],
                 ),
             ],
             clses=[],
@@ -221,6 +229,7 @@ class TestGetPytestFile:
                     full_name="z0foz1cj.test_hello.test_nothing",
                     line_num=3,
                     char_offset=0,
+                    decs=[],
                     is_collected=True,
                 ),
                 PytestFunc(
@@ -228,6 +237,7 @@ class TestGetPytestFile:
                     full_name="z0foz1cj.test_hello.test_param",
                     line_num=7,
                     char_offset=0,
+                    decs=[Decorator(line_num=6)],
                     is_collected=True,
                 ),
             ],

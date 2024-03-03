@@ -40,6 +40,7 @@ class TestGetCodebase:
                             full_name="pp8cadfs.hello",
                             line_num=1,
                             char_offset=0,
+                            decs=[],
                         ),
                     ],
                     clses=[],
@@ -71,6 +72,7 @@ class TestGetCodebase:
                             full_name="ow9xem9x.goodbye.goodbye",
                             line_num=1,
                             char_offset=0,
+                            decs=[],
                         ),
                     ],
                     clses=[
@@ -92,6 +94,7 @@ class TestGetCodebase:
                             full_name="ow9xem9x.hello.hello",
                             line_num=1,
                             char_offset=0,
+                            decs=[],
                         ),
                     ],
                     clses=[],

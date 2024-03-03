@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 from typing import TypeAlias
 
-from suiteas.domain import Class, File, Func
+from suiteas.domain import Class, Decorator, File, Func
 
 TEST_EXPR = False
 
@@ -127,6 +127,9 @@ def _parse_tree(  # noqa: PLR0912, C901
                     full_name=f"{module_name}.{node.name}",
                     line_num=node.lineno,
                     char_offset=node.col_offset,
+                    decs=[
+                        Decorator(line_num=dec.lineno) for dec in node.decorator_list
+                    ],
                 ),
             )
         elif isinstance(node, _CLS_DEF):

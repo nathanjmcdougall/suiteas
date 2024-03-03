@@ -32,6 +32,7 @@ def get_pytest_file(
                     full_name=func.full_name,
                     line_num=func.line_num,
                     char_offset=func.char_offset,
+                    decs=func.decs,
                     is_collected=_is_collected_pytest_func(
                         func,
                         pytest_items=pytest_items,
@@ -77,12 +78,12 @@ def _is_pytest_func(func: Func) -> bool:
 
 
 def _is_collected_pytest_func(func: Func, *, pytest_items: list[pytest.Item]) -> bool:
-    return any(func.line_num == _get_main_line_num(item) for item in pytest_items)
+    return any(_is_item_of_func(item=item, func=func) for item in pytest_items)
 
 
-def _get_main_line_num(item: pytest.Item) -> int:
+def _is_item_of_func(*, item: pytest.Item, func: Func) -> int:
     _, pytest_linenum, _ = item.reportinfo()
     if pytest_linenum is None:
         msg = "Unhandled case of None line-number reported for a pytest Item."
         raise NotImplementedError(msg)
-    return pytest_linenum + 1
+    return pytest_linenum + 1 in ([dec.line_num for dec in func.decs] + [func.line_num])

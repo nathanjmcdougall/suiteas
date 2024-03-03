@@ -99,6 +99,7 @@ class TestGetProject:
                                 full_name="pp8cadfs.hello",
                                 line_num=1,
                                 char_offset=0,
+                                decs=[],
                             ),
                         ],
                         clses=[],

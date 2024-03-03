@@ -21,8 +21,16 @@ class CodeObject(BaseModel, extra="forbid"):
         return self.name.startswith("_")
 
 
+class Decorator(BaseModel, extra="forbid"):
+    """A Python decorator."""
+
+    line_num: int
+
+
 class Func(CodeObject):
     """A general Python function."""
+
+    decs: list[Decorator]
 
 
 class Class(CodeObject):
