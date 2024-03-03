@@ -14,9 +14,10 @@ def get_pytest_file(
     path: Path,
     *,
     module_name: str,
-    pytest_items: list[pytest.Item] | None = None,
+    pytest_items: list[pytest.Item],
 ) -> PytestFile:
     """Read a pytest test file."""
+
     file = get_file(path, module_name=module_name)
     pytest_classes = [
         PytestClass(
@@ -31,18 +32,28 @@ def get_pytest_file(
                     full_name=func.full_name,
                     line_num=func.line_num,
                     char_offset=func.char_offset,
+                    is_collected=_is_collected_pytest_func(
+                        func,
+                        pytest_items=pytest_items,
+                    ),
                 )
                 for func in cls.funcs
-                if _is_pytest_func(func, pytest_items=pytest_items)
+                if _is_pytest_func(func)
             ],
         )
         for cls in file.clses
         if _is_pytest_class(cls)
     ]
     lone_pytest_funcs = [
-        PytestFunc(**func.model_dump())
+        PytestFunc(
+            **func.model_dump(),
+            is_collected=_is_collected_pytest_func(
+                func,
+                pytest_items=pytest_items,
+            ),
+        )
         for func in file.funcs
-        if _is_pytest_func(func, pytest_items=pytest_items)
+        if _is_pytest_func(func)
     ]
 
     return PytestFile(
@@ -60,12 +71,13 @@ def _is_pytest_class(cls: Class) -> bool:
     return cls.name.startswith(PYTEST_CLASS_PREFIX)
 
 
-def _is_pytest_func(func: Func, *, pytest_items: list[pytest.Item] | None) -> bool:
+def _is_pytest_func(func: Func) -> bool:
     """Check if a function is a pytest function."""
-    if pytest_items is not None:
-        return any(func.line_num == _get_main_line_num(item) for item in pytest_items)
-
     return func.name.startswith(PYTEST_FUNC_PREFIX)
+
+
+def _is_collected_pytest_func(func: Func, *, pytest_items: list[pytest.Item]) -> bool:
+    return any(func.line_num == _get_main_line_num(item) for item in pytest_items)
 
 
 def _get_main_line_num(item: pytest.Item) -> int:

@@ -1,0 +1,5 @@
+[tool.suiteas]
+pkg_names = ["z0foz1cj"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
