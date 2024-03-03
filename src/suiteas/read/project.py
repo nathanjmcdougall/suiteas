@@ -9,12 +9,17 @@ from suiteas.read.config import get_config
 from suiteas.read.pytest_suite import get_pytest_suite
 
 
-def get_project(*, proj_dir: Path, included_files: list[Path] | None = None) -> Project:
+def get_project(
+    *,
+    proj_dir: Path,
+    included_files: list[Path] | None = None,
+    is_static_only: bool = False,
+) -> Project:
     """Get a project from a directory."""
     if included_files is None:
         included_files = []
 
-    config = get_config(proj_dir=proj_dir)
+    config = get_config(proj_dir=proj_dir, is_static_only=is_static_only)
 
     included_files = [path.resolve() for path in included_files]
 
@@ -73,6 +78,7 @@ def get_project(*, proj_dir: Path, included_files: list[Path] | None = None) -> 
         proj_dir=proj_dir,
         config=config,
         included_pytest_files=included_pytest_files,
+        is_static_only=is_static_only,
     )
 
     project = Project(

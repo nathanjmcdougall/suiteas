@@ -14,10 +14,23 @@ MAX_PROJ_DIR_DEPTH = 1000
 
 def run_suiteas_main(argv: Sequence[str]) -> None:
     """Run the suiteas command line interface without a system exit."""
-    included_files = [Path(arg) for arg in argv]
+    argv = list(argv)
+
+    is_static_only = "--static-only" in argv
+    if is_static_only:
+        argv.remove("--static-only")
+
+    included_files = [Path(arg) for arg in argv if not arg.startswith("--")]
+    bad_flags = [arg for arg in argv if arg.startswith("--")]
+
+    _report_bad_flags(bad_flags)
 
     proj_dir = _infer_proj_dir()
-    project = get_project(proj_dir=proj_dir, included_files=included_files)
+    project = get_project(
+        proj_dir=proj_dir,
+        included_files=included_files,
+        is_static_only=is_static_only,
+    )
 
     violations = get_violations(project)
     if violations:
@@ -25,10 +38,24 @@ def run_suiteas_main(argv: Sequence[str]) -> None:
         sys.exit(1)
 
 
-def run_suiteas(argv: Sequence[str] | None = None) -> None:
+def _report_bad_flags(bad_flags: list[str]) -> None:
+    if bad_flags:
+        msg = f"Unrecognized flags {" ".join(bad_flags)} provided"
+        raise ValueError(msg)
+
+
+def run_suiteas(argv: Sequence[str] | None = sys.argv) -> None:
     """Run the suiteas command line interface."""
+
     if argv is None:
         argv = []
+
+    if len(sys.argv) == 1:
+        argv = []
+    elif len(sys.argv) > 1:
+        argv = sys.argv[1:]
+    else:
+        raise AssertionError
 
     try:
         run_suiteas_main(argv)

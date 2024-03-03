@@ -6,9 +6,10 @@ from typing import Literal, TypeAlias
 
 from pydantic import BaseModel
 
-RuleCode: TypeAlias = Literal["SUI001", "SUI002", "SUI003"]
+RuleCode: TypeAlias = Literal["SUI001", "SUI002", "SUI003", "SUI104"]
 
 RULE_CODES: list[RuleCode] = list(typing.get_args(RuleCode))
+NONSTATIC_RULE_CODES: list[RuleCode] = ["SUI104"]
 
 
 class Rule(BaseModel):
@@ -35,4 +36,10 @@ unimported_tested_func = Rule(
     rule_code="SUI003",
     name="unimported-tested-func",
     description="{func_fullname} is not imported in {pytest_file_rel_posix}",
+)
+
+uncollected_test_func = Rule(
+    rule_code="SUI104",
+    name="uncollected-test-func",
+    description="{func_fullname} is not collected by pytest",
 )

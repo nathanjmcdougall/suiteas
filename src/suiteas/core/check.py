@@ -10,13 +10,14 @@ from suiteas.core.path import path_to_pytest_path
 from suiteas.core.rules import (
     empty_pytest_class,
     missing_test_func,
+    uncollected_test_func,
     unimported_tested_func,
 )
 from suiteas.core.violations import Violation
-from suiteas.domain import File, Func, Project, PytestFile
+from suiteas.domain import File, Func, Project, PytestFile, PytestFunc
 
 
-def get_violations(project: Project) -> list[Violation]:
+def get_violations(project: Project) -> list[Violation]:  # noqa: C901
     """Check whether a test suite is compliant, and get a list of any violations."""
 
     violations = []
@@ -63,9 +64,24 @@ def get_violations(project: Project) -> list[Violation]:
                     ),
                 )
 
-    # Check SUI002: empty-pytest-class
     if "SUI002" in project.config.checks:
         violations.extend(_get_sui002_violations(project=project))
+
+    if "SUI104" in project.config.checks:
+        for pytest_file in project.pytest_suite.pytest_files:
+            pytest_funcs = pytest_file.lone_pytest_funcs + [
+                pytest_func
+                for cls in pytest_file.pytest_clses
+                for pytest_func in cls.pytest_funcs
+            ]
+            for pytest_func in pytest_funcs:
+                violations.extend(
+                    _get_sui104_violations(
+                        pytest_func=pytest_func,
+                        file=pytest_file,
+                        project=project,
+                    ),
+                )
 
     return violations
 
@@ -139,6 +155,28 @@ def _get_sui003_violations(
                 ),
             ),
         ]
+    return []
+
+
+def _get_sui104_violations(
+    *,
+    pytest_func: PytestFunc,
+    file: File,
+    project: Project,
+) -> list[Violation]:
+    if not pytest_func.is_collected:
+        return [
+            Violation(
+                rule=uncollected_test_func,
+                rel_path=file.path.relative_to(project.proj_dir),
+                line_num=pytest_func.line_num,
+                char_offset=pytest_func.char_offset,
+                fmt_info=dict(
+                    func_fullname=pytest_func.full_name,
+                ),
+            ),
+        ]
+
     return []
 
 

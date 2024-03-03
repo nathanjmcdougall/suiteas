@@ -29,5 +29,5 @@ def collect_test_items(proj_dir: Path) -> list[pytest.Item]:
         raise ValueError(msg)
 
     plugin = PytestPlugin()
-    pytest.main(["--collect-only", proj_dir.as_posix()], plugins=[plugin])
+    pytest.main(["--collect-only", "-qq", proj_dir.as_posix()], plugins=[plugin])
     return plugin.collected

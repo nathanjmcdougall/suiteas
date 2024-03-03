@@ -71,6 +71,7 @@ repos:
         entry: python -m suiteas_hook
         language: python
         types: [python]
+        args: ["--static-only"]
         require_serial: true
         additional_dependencies:
           # Sync with pyproject.toml

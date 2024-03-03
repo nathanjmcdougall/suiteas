@@ -81,6 +81,11 @@ SuiteAs will enforce the following rules:
 | SUI001 | Function or class is missing a corresponding test function |
 | SUI002 | Pytest test class is empty |
 | SUI003 | Pytest file does not import the function being tested |
+| SUI104 | Test function is detected but not collected by pytest |
+
+The SUI1XX series code requires pytest to collect the tests. This is not suitable for
+static analysis, and these are not enabled by default when using pre-commit. You can
+reproduce this behaviour with the `--static-only` flag.
 
 ## Developer Information
 

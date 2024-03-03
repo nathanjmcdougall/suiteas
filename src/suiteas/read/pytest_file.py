@@ -26,36 +26,12 @@ def get_pytest_file(
             line_num=cls.line_num,
             char_offset=cls.char_offset,
             funcs=cls.funcs,
-            pytest_funcs=[
-                PytestFunc(
-                    name=func.name,
-                    full_name=func.full_name,
-                    line_num=func.line_num,
-                    char_offset=func.char_offset,
-                    decs=func.decs,
-                    is_collected=_is_collected_pytest_func(
-                        func,
-                        pytest_items=pytest_items,
-                    ),
-                )
-                for func in cls.funcs
-                if _is_pytest_func(func)
-            ],
+            pytest_funcs=_funcs2pytestfuncs(cls.funcs, pytest_items=pytest_items),
         )
         for cls in file.clses
         if _is_pytest_class(cls)
     ]
-    lone_pytest_funcs = [
-        PytestFunc(
-            **func.model_dump(),
-            is_collected=_is_collected_pytest_func(
-                func,
-                pytest_items=pytest_items,
-            ),
-        )
-        for func in file.funcs
-        if _is_pytest_func(func)
-    ]
+    lone_pytest_funcs = _funcs2pytestfuncs(file.funcs, pytest_items=pytest_items)
 
     return PytestFile(
         path=file.path,
@@ -65,6 +41,24 @@ def get_pytest_file(
         lone_pytest_funcs=lone_pytest_funcs,
         pytest_clses=pytest_classes,
     )
+
+
+def _funcs2pytestfuncs(
+    funcs: list[Func],
+    *,
+    pytest_items: list[pytest.Item],
+) -> list[PytestFunc]:
+    return [
+        PytestFunc(
+            **func.model_dump(),
+            is_collected=_is_collected_pytest_func(
+                func,
+                pytest_items=pytest_items,
+            ),
+        )
+        for func in funcs
+        if _is_pytest_func(func)
+    ]
 
 
 def _is_pytest_class(cls: Class) -> bool:

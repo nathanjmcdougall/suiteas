@@ -14,11 +14,12 @@ def get_pytest_suite(
     proj_dir: Path,
     config: ProjConfig,
     included_pytest_files: list[Path] | None,
+    is_static_only: bool = False,
 ) -> PytestSuite:
     """Read the pytest unit test suite for a project."""
     unit_dir = proj_dir / config.tests_rel_path / config.unittest_dir_name
 
-    pytest_items = collect_test_items(proj_dir=proj_dir)
+    pytest_items = collect_test_items(proj_dir=proj_dir) if not is_static_only else []
 
     if not unit_dir.exists():
         msg = f"Could not find {unit_dir}"

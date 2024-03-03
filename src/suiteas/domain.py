@@ -57,7 +57,7 @@ class Codebase(BaseModel, extra="forbid"):
 class PytestFunc(Func):
     """A Pytest test function."""
 
-    is_collected: bool
+    is_collected: bool  # i.e. collected by pytest as a test
 
 
 class PytestClass(Class):

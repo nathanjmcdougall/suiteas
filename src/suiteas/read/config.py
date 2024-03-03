@@ -7,7 +7,7 @@ from pydantic import BaseModel, ValidationError
 
 from suiteas.config import ProjConfig
 from suiteas.core.names import PYPROJTOML_NAME
-from suiteas.core.rules import RULE_CODES, RuleCode
+from suiteas.core.rules import NONSTATIC_RULE_CODES, RULE_CODES, RuleCode
 
 
 class ConfigFileError(ValueError):
@@ -35,7 +35,7 @@ class TOMLProjConfig(BaseModel):
     model_config = dict(extra="forbid")
 
 
-def get_config(*, proj_dir: Path) -> ProjConfig:
+def get_config(*, proj_dir: Path, is_static_only: bool = False) -> ProjConfig:
     """Find the configuration for a project in the pyproject.toml file."""
     toml_path = proj_dir / PYPROJTOML_NAME
     try:
@@ -97,7 +97,10 @@ def get_config(*, proj_dir: Path) -> ProjConfig:
         unittests_dir=unittests_dir,
         use_consolidated_tests_dir=use_consolidated_tests_dir,
     )
-    checks = list(set(RULE_CODES) - set(toml_config.ignore or []))
+    excluded_rule_codes = toml_config.ignore or []
+    if is_static_only:
+        excluded_rule_codes += NONSTATIC_RULE_CODES
+    checks = list(set(RULE_CODES) - set(excluded_rule_codes))
     checks.sort()
 
     return ProjConfig(
