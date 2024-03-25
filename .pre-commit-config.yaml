@@ -46,13 +46,13 @@ repos:
         args: [--assume-in-merge]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.2.2 # Sync with pyproject.toml
+    rev: v0.3.4 # Sync with pyproject.toml
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.8.0 # Sync with pyproject.toml
+    rev: v1.9.0 # Sync with pyproject.toml
     hooks:
       - id: mypy
         args: ["."]
