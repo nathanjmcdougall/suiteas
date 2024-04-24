@@ -244,7 +244,12 @@ def _validate_pkg_names(
 
         test_pkg_dir = unittests_dir / pkg_name
         if not test_pkg_dir.exists():
-            msg = f"Could not find unit test directory of {pkg_name} at {test_pkg_dir}"
+            msg = (
+                f"Could not find unit test directory of {pkg_name} at {test_pkg_dir}.\n"
+                f"HINT: If you are not expecting a unit test directory for {pkg_name}, "
+                f"perhaps the `src_rel_path` is set incorrectly."
+            )
+
             raise FileNotFoundError(msg)
 
 
