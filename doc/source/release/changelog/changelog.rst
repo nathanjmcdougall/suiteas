@@ -1,3 +1,12 @@
+0.3.3 (2024-04-25)
+==================
+
+Bug fixes
+---------
+
+- A bug has been fixed where UTF8 characters in Python files would give fatal errors.
+
+
 0.3.2 (2024-04-25)
 ==================
 
