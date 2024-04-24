@@ -1,0 +1,1 @@
+A bug has been fixed where UTF8 characters in Python files would give fatal errors.

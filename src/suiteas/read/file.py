@@ -88,7 +88,7 @@ def get_file(path: Path, *, module_name: str) -> File:
         msg = f"Could not find {path}"
         raise FileNotFoundError(msg)
 
-    with path.open(mode="r") as _f:
+    with path.open(mode="r", encoding="utf8") as _f:
         source = _f.read()
         try:
             tree = ast.parse(source)
