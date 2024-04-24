@@ -129,7 +129,7 @@ ignore = [
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
-[tool.ruff.extend-per-file-ignores]
+[tool.ruff.lint.extend-per-file-ignores]
 "src/suiteas/**/__init__.py" = [
     "D104", # __init__.py files do not need a docstring necessarily.
 ]

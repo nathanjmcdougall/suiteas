@@ -1,0 +1,3 @@
+Better error messages are now provided for the situation where ``src_rel_path`` is set
+incorrectly and where as a result, SuiteAs is looking for unit tests for something which
+is not a package.
