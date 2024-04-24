@@ -125,20 +125,24 @@ def _heuristic_src_rel_path(
                 break
             return Path(".")
 
+    course_of_action = (
+        "Please manually configure the package name(s) and/or source directory in "
+        "pyproject.toml as follows:\n"
+        "[tool.suiteas]\n"
+        'pkg_names = ["???"]\n'
+        'src_rel_path = "???"'
+    )
+
     if found_toml:
         msg = (
-            "Could not automatically determine source directory for the project. "
-            "Please manually configure this in pyproject.toml as follows:\n"
-            "[tool.suiteas]\n"
-            'src_rel_path = "???"'
+            "Could not automatically determine source directory for the project. " +
+            course_of_action
         )
         raise ConfigFileError(msg)
 
     msg = (
         "Could not find configuration file nor determine the source directory for the "
-        "project. Please manually configure this in pyproject.toml as follows:\n"
-        "[tool.suiteas]\n"
-        'src_rel_path = "???"'
+        "project. " + course_of_action
     )
     raise FileNotFoundError(msg)
 
