@@ -276,7 +276,7 @@ def get_toml_config(toml_path: Path) -> TOMLProjConfig:
         msg = f"Could not find TOML configuration file at {toml_path}"
         raise FileNotFoundError(msg)
 
-    with toml_path.open(mode="r") as file:
+    with toml_path.open(mode="r", encoding="utf8") as file:
         pyproject_contents = file.read()
 
     if not pyproject_contents:

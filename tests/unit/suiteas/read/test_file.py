@@ -181,7 +181,7 @@ class TestGetFile:
     def test_random_file(self, tmp_path: Path, seed: int) -> None:
         """Generate a random file and check we can at least run the tool."""
         file_path = tmp_path / "random_file.py"
-        with file_path.open(mode="w") as _f:
+        with file_path.open(mode="w", encoding="utf8") as _f:
             _f.write(generate(seed=seed))
         try:
             file = get_file(file_path, module_name="random_file")
@@ -189,6 +189,10 @@ class TestGetFile:
             return
         assert type(file) == File
 
+    def test_unicode_backquotes(self, files_parent_dir: Path) -> None:
+        file_path = files_parent_dir / "unicode_backquotes.py"
+
+        get_file(file_path, module_name="fakey.mcfake.unicode_backquotes")
 
 class TestFlowCtrlTree:
     def test_correspondence(self) -> None:
