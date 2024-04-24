@@ -89,7 +89,11 @@ def get_file(path: Path, *, module_name: str) -> File:
         raise FileNotFoundError(msg)
 
     with path.open(mode="r", encoding="utf8") as _f:
-        source = _f.read()
+        try:
+            source = _f.read()
+        except UnicodeDecodeError as err:
+            msg = f"Could not read {path}: {err}"
+            raise AnalyzedFileSyntaxError(msg) from None
         try:
             tree = ast.parse(source)
         except SyntaxError as err:
