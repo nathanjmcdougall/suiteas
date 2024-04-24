@@ -5,10 +5,17 @@
 #   pre: false
 #   features: []
 #   all-features: false
+#   with-sources: false
 
 -e file:.
 annotated-types==0.6.0
+    # via pydantic
 pydantic==2.4.2
+    # via suiteas
 pydantic-core==2.10.1
+    # via pydantic
 tomli==2.0.1
+    # via suiteas
 typing-extensions==4.8.0
+    # via pydantic
+    # via pydantic-core

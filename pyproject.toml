@@ -73,7 +73,7 @@ dev-dependencies = [
     "pytest>=7.4.3",
     "typing-extensions>=4.8.0",
     #
-    "ruff==0.2.1",
+    "ruff==0.2.2",
     "mypy==1.8.0",
     "python-dotenv==1.0.0",
     # ^Sync with .pre-commit-config.yaml
@@ -129,7 +129,7 @@ ignore = [
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
-[tool.ruff.extend-per-file-ignores]
+[tool.ruff.lint.extend-per-file-ignores]
 "src/suiteas/**/__init__.py" = [
     "D104", # __init__.py files do not need a docstring necessarily.
 ]
